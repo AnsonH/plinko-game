@@ -1,38 +1,20 @@
-# create-svelte
+# plinko-game
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A web-based Plinko (Pachinko) game inspired by [Stake.com's Plinko game](https://stake.com/casino/games/plinko).
 
-## Creating a project
+Created using [Svelte](https://svelte.dev/), [Tailwind CSS](https://tailwindcss.com/), and [matter-js](https://github.com/liabru/matter-js).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+TODO
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Getting Started
 
-## Developing
+1. Install [pnpm](https://pnpm.io/installation)
+2. Clone this repository
+3. Install dependencies: `pnpm install`
+4. Start the development server: `pnpm dev`
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Screenshots
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+TODO
