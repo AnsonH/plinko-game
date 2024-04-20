@@ -1,13 +1,17 @@
 <script lang="ts">
 	import Plinko from '$lib/components/Plinko';
-
-	let rows = 8;
+	import { rowCountOptions } from '$lib/constants/plinko';
+	import { rowCount } from '$lib/stores/game';
 </script>
 
 <div>
-	<Plinko {rows} />
+	<Plinko />
 </div>
 <div class="mx-4 mt-8 flex items-center gap-8">
 	<label for="rows">Rows</label>
-	<input type="number" bind:value={rows} name="rows" id="rows" class="border border-gray-400 p-2" />
+	<select bind:value={$rowCount} class="border border-gray-400 p-2">
+		{#each rowCountOptions as rows}
+			<option value={rows}>{rows}</option>
+		{/each}
+	</select>
 </div>
