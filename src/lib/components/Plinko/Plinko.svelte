@@ -1,25 +1,25 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import PlinkoEngine from './PlinkoEngine';
+  import { onMount } from 'svelte';
+  import PlinkoEngine from './PlinkoEngine';
 
-	let rows = 8; // TODO(Anson): Read from store
+  let rows = 8; // TODO(Anson): Read from store
 
-	let canvas: HTMLCanvasElement;
+  let canvas: HTMLCanvasElement;
 
-	onMount(() => {
-		const plinkoEngine = new PlinkoEngine(canvas, rows);
-		plinkoEngine.start();
+  onMount(() => {
+    const plinkoEngine = new PlinkoEngine(canvas, rows);
+    plinkoEngine.start();
 
-		plinkoEngine.dropBall();
-		const dropBallInterval = setInterval(() => plinkoEngine.dropBall(), 1000);
+    plinkoEngine.dropBall();
+    const dropBallInterval = setInterval(() => plinkoEngine.dropBall(), 1000);
 
-		return () => {
-			clearInterval(dropBallInterval);
-			plinkoEngine.stop();
-		};
-	});
+    return () => {
+      clearInterval(dropBallInterval);
+      plinkoEngine.stop();
+    };
+  });
 </script>
 
 <div class="w-fit">
-	<canvas bind:this={canvas} />
+  <canvas bind:this={canvas} />
 </div>
