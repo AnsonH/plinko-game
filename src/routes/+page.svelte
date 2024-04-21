@@ -43,6 +43,10 @@
     <button on:click={stopDropBallInterval}>Stop Auto Drop</button>
   {/if}
 </div>
-<p class="mx-4 my-4">
-  Bin History: <span class="font-mono">{JSON.stringify(Object.fromEntries(occurrences))}</span>
-</p>
+<div class="mx-4 my-4">
+  Bin History:
+  <ul>
+    <li class="font-mono">{JSON.stringify(Object.fromEntries(occurrences))}</li>
+    <li class="font-mono">{JSON.stringify(Array.from(occurrences.values()))}</li>
+  </ul>
+</div>
