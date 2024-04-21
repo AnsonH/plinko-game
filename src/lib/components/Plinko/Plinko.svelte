@@ -1,20 +1,18 @@
 <script lang="ts">
-  import { rowCount, plinkoEngine } from '$lib/stores/game';
+  import { plinkoEngine } from '$lib/stores/game';
   import { onMount } from 'svelte';
   import PlinkoEngine from './PlinkoEngine';
 
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
-    $plinkoEngine = new PlinkoEngine(canvas, $rowCount);
+    $plinkoEngine = new PlinkoEngine(canvas);
     $plinkoEngine.start();
 
     return () => {
       $plinkoEngine?.stop();
     };
   });
-
-  $: $plinkoEngine?.updateRowCount($rowCount);
 </script>
 
 <div class="w-fit">

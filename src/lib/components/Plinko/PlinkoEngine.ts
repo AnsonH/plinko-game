@@ -1,13 +1,29 @@
-import { binRecords } from '$lib/stores/game';
+import { binRecords, rowCount } from '$lib/stores/game';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter from 'matter-js';
+import { get } from 'svelte/store';
 
 /**
  * Engine for rendering the Plinko game using [matter-js](https://brm.io/matter-js/).
+ *
+ * The engine will read/write data to Svelte stores during game state changes.
  */
 class PlinkoEngine {
+  /**
+   * The canvas element to render the game to.
+   */
   private canvas: HTMLCanvasElement;
+
+  /**
+   * A cache value of the {@link rowCount} store for faster access. It's updated
+   * when the store value changes.
+   */
   private rowCount: number;
+  /**
+   * The x-coordinates of every pin's center in the last row. Useful for calculating
+   * which bin a ball falls into.
+   */
+  private pinsLastRowXCoords: number[] = [];
 
   private engine: Matter.Engine;
   private render: Matter.Render;
@@ -15,10 +31,10 @@ class PlinkoEngine {
 
   private pins: Matter.Body[] = [];
   /**
-   * The x-coordinates of every pin's center in the last row. Useful for calculating
-   * which bin a ball falls into.
+   * "Sensor" is an invisible body at the bottom of the canvas. It detects whether
+   * a ball arrives at the bottom and enters a bin.
    */
-  private pinsLastRowXCoords: number[] = [];
+  private sensor: Matter.Body;
 
   static PIN_CATEGORY = 0x0001;
   static BALL_CATEGORY = 0x0002;
@@ -29,14 +45,18 @@ class PlinkoEngine {
   static PADDING_Y = 36;
 
   /**
-   * Creates the engine without starting the rendering or physics engine.
+   * Creates the engine and the game's layout.
    *
    * @param canvas The canvas element to render the game to.
-   * @param rowCount Initial number of rows of pins.
+   *
+   * @remarks This constructor does NOT start the rendering and physics engine.
+   * Call {@link start} to start the engine.
    */
-  constructor(canvas: HTMLCanvasElement, rowCount: number) {
+  constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-    this.rowCount = rowCount;
+
+    this.rowCount = get(rowCount);
+    rowCount.subscribe((newRowCount) => this.updateRowCount(newRowCount));
 
     this.engine = Matter.Engine.create({
       timing: {
@@ -51,17 +71,13 @@ class PlinkoEngine {
         height: PlinkoEngine.HEIGHT,
         background: '#0f1728',
         wireframes: false,
-        showPositions: true,
       },
     });
     this.runner = Matter.Runner.create();
-  }
 
-  /**
-   * Renders the game and starts the physics engine.
-   */
-  start() {
-    const sensor = Matter.Bodies.rectangle(
+    this.placePins();
+
+    this.sensor = Matter.Bodies.rectangle(
       this.canvas.width / 2,
       this.canvas.height,
       this.canvas.width,
@@ -74,23 +90,32 @@ class PlinkoEngine {
         },
       },
     );
-
-    Matter.Composite.add(this.engine.world, [sensor]);
-
-    this.renderPins();
-
+    Matter.Composite.add(this.engine.world, [this.sensor]);
     Matter.Events.on(this.engine, 'collisionStart', ({ pairs }) => {
       pairs.forEach(({ bodyA, bodyB }) => {
-        if (bodyA === sensor) {
+        if (bodyA === this.sensor) {
           this.handleSensorCollision(bodyB);
-        } else if (bodyB === sensor) {
+        } else if (bodyB === this.sensor) {
           this.handleSensorCollision(bodyA);
         }
       });
     });
+  }
 
+  /**
+   * Renders the game and starts the physics engine.
+   */
+  start() {
     Matter.Render.run(this.render); // Renders the scene to canvas
     Matter.Runner.run(this.runner, this.engine); // Starts the simulation in physics engine
+  }
+
+  /**
+   * Stops (pauses) the rendering and physics engine.
+   */
+  stop() {
+    Matter.Render.stop(this.render);
+    Matter.Runner.stop(this.runner);
   }
 
   /**
@@ -124,30 +149,9 @@ class PlinkoEngine {
   }
 
   /**
-   * Refreshes the game with a new number of rows.
-   *
-   * Does nothing if the new row count equals the current count.
-   */
-  updateRowCount(rowCount: number) {
-    if (rowCount === this.rowCount) {
-      return;
-    }
-
-    this.removeAllBalls();
-
-    this.rowCount = rowCount;
-    this.renderPins();
-  }
-
-  stop() {
-    Matter.Render.stop(this.render);
-    Matter.Runner.stop(this.runner);
-  }
-
-  /**
    * Gets the horizontal distance between each pin's center point.
    */
-  get pinDistanceX(): number {
+  private get pinDistanceX(): number {
     const lastRowPinCount = 3 + this.rowCount - 1;
     return (this.canvas.width - PlinkoEngine.PADDING_X * 2) / (lastRowPinCount - 1);
   }
@@ -157,11 +161,27 @@ class PlinkoEngine {
   }
 
   /**
+   * Refreshes the game with a new number of rows.
+   *
+   * Does nothing if the new row count equals the current count.
+   */
+  private updateRowCount(rowCount: number) {
+    if (rowCount === this.rowCount) {
+      return;
+    }
+
+    this.removeAllBalls();
+
+    this.rowCount = rowCount;
+    this.placePins();
+  }
+
+  /**
    * Called when a ball hits the invisible sensor at the bottom.
    */
   private handleSensorCollision(ball: Matter.Body) {
     const binNumber = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
-    if (binNumber !== -1) {
+    if (binNumber !== -1 && binNumber < this.pinsLastRowXCoords.length - 1) {
       binRecords.update((records) => [...records, binNumber]);
     }
 
@@ -171,7 +191,7 @@ class PlinkoEngine {
   /**
    * Renders the pins. Previous pins are removed before rendering new ones.
    */
-  private renderPins() {
+  private placePins() {
     const { PADDING_X, PADDING_Y, PIN_CATEGORY, BALL_CATEGORY } = PlinkoEngine;
 
     if (this.pins.length > 0) {
@@ -207,9 +227,6 @@ class PlinkoEngine {
     Matter.Composite.add(this.engine.world, this.pins);
   }
 
-  /**
-   * Remove all moving balls from the engine.
-   */
   private removeAllBalls() {
     Matter.Composite.allBodies(this.engine.world).forEach((body) => {
       if (body.collisionFilter.category === PlinkoEngine.BALL_CATEGORY) {
