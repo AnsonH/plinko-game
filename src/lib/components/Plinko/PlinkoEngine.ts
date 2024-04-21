@@ -40,6 +40,7 @@ class PlinkoEngine {
       options: {
         width: PlinkoEngine.WIDTH,
         height: PlinkoEngine.HEIGHT,
+        background: '#0f1728',
         wireframes: false,
       },
     });
