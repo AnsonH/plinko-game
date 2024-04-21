@@ -5,9 +5,9 @@ import Matter from 'matter-js';
  * Engine for rendering the Plinko game using [matter-js](https://brm.io/matter-js/).
  */
 class PlinkoEngine {
-  canvas: HTMLCanvasElement;
-
+  private canvas: HTMLCanvasElement;
   private rowCount: number;
+
   private engine: Matter.Engine;
   private render: Matter.Render;
   private runner: Matter.Runner;
@@ -80,17 +80,24 @@ class PlinkoEngine {
     Matter.Runner.run(this.runner, this.engine); // Starts the simulation in physics engine
   }
 
+  /**
+   * Drops a new ball from the top with a random horizontal offset.
+   */
   dropBall() {
-    const ballOffsetX = this.pinDistanceX * 0.5;
-    const ballRadius = this.pinDistanceX * 0.25;
+    const ballOffsetRangeX = this.pinDistanceX * 0.8;
+    const ballRadius = this.pinRadius * 2;
 
     const ball = Matter.Bodies.circle(
-      getRandomBetween(this.canvas.width / 2 - ballOffsetX, this.canvas.width / 2 + ballOffsetX),
+      getRandomBetween(
+        this.canvas.width / 2 - ballOffsetRangeX,
+        this.canvas.width / 2 + ballOffsetRangeX,
+      ),
       0,
       ballRadius,
       {
         restitution: 0.45, // Bounciness
         friction: 0.01,
+        frictionAir: 0.02,
         collisionFilter: {
           category: PlinkoEngine.BALL_CATEGORY,
           mask: PlinkoEngine.PIN_CATEGORY, // Collide with pins only, but not other balls
@@ -101,6 +108,22 @@ class PlinkoEngine {
       },
     );
     Matter.Composite.add(this.engine.world, ball);
+  }
+
+  /**
+   * Refreshes the game with a new number of rows.
+   *
+   * Does nothing if the new row count equals the current count.
+   */
+  updateRowCount(rowCount: number) {
+    if (rowCount === this.rowCount) {
+      return;
+    }
+
+    this.removeAllBalls();
+
+    this.rowCount = rowCount;
+    this.renderPins();
   }
 
   stop() {
@@ -114,6 +137,10 @@ class PlinkoEngine {
   get pinDistanceX(): number {
     const lastRowPinCount = 3 + this.rowCount - 1;
     return (this.canvas.width - PlinkoEngine.PADDING_X * 2) / (lastRowPinCount - 1);
+  }
+
+  private get pinRadius(): number {
+    return (24 - this.rowCount) / 2;
   }
 
   /**
@@ -135,7 +162,7 @@ class PlinkoEngine {
 
       for (let col = 0; col < 3 + row; ++col) {
         const colX = rowPaddingX + ((this.canvas.width - rowPaddingX * 2) / (3 + row - 1)) * col;
-        const pin = Matter.Bodies.circle(colX, rowY, 8, {
+        const pin = Matter.Bodies.circle(colX, rowY, this.pinRadius, {
           isStatic: true,
           render: {
             fillStyle: '#ffffff',
@@ -149,6 +176,17 @@ class PlinkoEngine {
       }
     }
     Matter.Composite.add(this.engine.world, this.pins);
+  }
+
+  /**
+   * Remove all moving balls from the engine.
+   */
+  private removeAllBalls() {
+    Matter.Composite.allBodies(this.engine.world).forEach((body) => {
+      if (body.collisionFilter.category === PlinkoEngine.BALL_CATEGORY) {
+        Matter.Composite.remove(this.engine.world, body);
+      }
+    });
   }
 }
 

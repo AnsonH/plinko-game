@@ -1,23 +1,25 @@
 <script lang="ts">
+  import { rowCount } from '$lib/stores/game';
   import { onMount } from 'svelte';
   import PlinkoEngine from './PlinkoEngine';
 
-  let rows = 8; // TODO(Anson): Read from store
-
   let canvas: HTMLCanvasElement;
+  let plinkoEngine: PlinkoEngine | null = null;
 
   onMount(() => {
-    const plinkoEngine = new PlinkoEngine(canvas, rows);
+    plinkoEngine = new PlinkoEngine(canvas, $rowCount);
     plinkoEngine.start();
 
     plinkoEngine.dropBall();
-    const dropBallInterval = setInterval(() => plinkoEngine.dropBall(), 1000);
+    const dropBallInterval = setInterval(() => plinkoEngine?.dropBall(), 1000);
 
     return () => {
       clearInterval(dropBallInterval);
-      plinkoEngine.stop();
+      plinkoEngine?.stop();
     };
   });
+
+  $: plinkoEngine?.updateRowCount($rowCount);
 </script>
 
 <div class="w-fit">
