@@ -1,7 +1,8 @@
 <script lang="ts">
   import Plinko from '$lib/components/Plinko';
   import { rowCountOptions } from '$lib/constants/plinko';
-  import { plinkoEngine, rowCount } from '$lib/stores/game';
+  import { binRecords, plinkoEngine, rowCount } from '$lib/stores/game';
+  import { countValueOccurrences } from '$lib/utils/numbers';
 
   let dropBallInterval: number | null = null;
 
@@ -17,6 +18,8 @@
       dropBallInterval = null;
     }
   }
+
+  $: occurrences = countValueOccurrences($binRecords);
 </script>
 
 <div>
@@ -40,3 +43,6 @@
     <button on:click={stopDropBallInterval}>Stop Auto Drop</button>
   {/if}
 </div>
+<p class="mx-4 my-4">
+  Bin History: <span class="font-mono">{JSON.stringify(Object.fromEntries(occurrences))}</span>
+</p>

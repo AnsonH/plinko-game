@@ -1,3 +1,4 @@
+import { binRecords } from '$lib/stores/game';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter from 'matter-js';
 
@@ -11,7 +12,13 @@ class PlinkoEngine {
   private engine: Matter.Engine;
   private render: Matter.Render;
   private runner: Matter.Runner;
+
   private pins: Matter.Body[] = [];
+  /**
+   * The x-coordinates of every pin's center in the last row. Useful for calculating
+   * which bin a ball falls into.
+   */
+  private pinsLastRowXCoords: number[] = [];
 
   static PIN_CATEGORY = 0x0001;
   static BALL_CATEGORY = 0x0002;
@@ -22,6 +29,8 @@ class PlinkoEngine {
   static PADDING_Y = 36;
 
   /**
+   * Creates the engine without starting the rendering or physics engine.
+   *
    * @param canvas The canvas element to render the game to.
    * @param rowCount Initial number of rows of pins.
    */
@@ -42,6 +51,7 @@ class PlinkoEngine {
         height: PlinkoEngine.HEIGHT,
         background: '#0f1728',
         wireframes: false,
+        showPositions: true,
       },
     });
     this.runner = Matter.Runner.create();
@@ -59,6 +69,9 @@ class PlinkoEngine {
       {
         isSensor: true,
         isStatic: true,
+        render: {
+          visible: false,
+        },
       },
     );
 
@@ -66,13 +79,12 @@ class PlinkoEngine {
 
     this.renderPins();
 
-    // Clean up balls after they hit the sensor at the bottom
     Matter.Events.on(this.engine, 'collisionStart', ({ pairs }) => {
       pairs.forEach(({ bodyA, bodyB }) => {
         if (bodyA === sensor) {
-          Matter.Composite.remove(this.engine.world, bodyB);
+          this.handleSensorCollision(bodyB);
         } else if (bodyB === sensor) {
-          Matter.Composite.remove(this.engine.world, bodyA);
+          this.handleSensorCollision(bodyA);
         }
       });
     });
@@ -145,6 +157,18 @@ class PlinkoEngine {
   }
 
   /**
+   * Called when a ball hits the invisible sensor at the bottom.
+   */
+  private handleSensorCollision(ball: Matter.Body) {
+    const binNumber = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
+    if (binNumber !== -1) {
+      binRecords.update((records) => [...records, binNumber]);
+    }
+
+    Matter.Composite.remove(this.engine.world, ball);
+  }
+
+  /**
    * Renders the pins. Previous pins are removed before rendering new ones.
    */
   private renderPins() {
@@ -174,6 +198,10 @@ class PlinkoEngine {
           },
         });
         this.pins.push(pin);
+
+        if (row === this.rowCount - 1) {
+          this.pinsLastRowXCoords.push(colX);
+        }
       }
     }
     Matter.Composite.add(this.engine.world, this.pins);
