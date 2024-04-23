@@ -31,6 +31,12 @@ class PlinkoEngine {
 
   private pins: Matter.Body[] = [];
   /**
+   * Walls are invisible, slanted "guard rails" at the left and right sides of the
+   * pin triangle. It prevents balls from falling outside the pin triangle and not
+   * hitting a bin.
+   */
+  private walls: Matter.Body[] = [];
+  /**
    * "Sensor" is an invisible body at the bottom of the canvas. It detects whether
    * a ball arrives at the bottom and enters a bin.
    */
@@ -75,7 +81,7 @@ class PlinkoEngine {
     });
     this.runner = Matter.Runner.create();
 
-    this.placePins();
+    this.placePinsAndWalls();
 
     this.sensor = Matter.Bodies.rectangle(
       this.canvas.width / 2,
@@ -173,7 +179,7 @@ class PlinkoEngine {
     this.removeAllBalls();
 
     this.rowCount = rowCount;
-    this.placePins();
+    this.placePinsAndWalls();
   }
 
   /**
@@ -189,14 +195,18 @@ class PlinkoEngine {
   }
 
   /**
-   * Renders the pins. Previous pins are removed before rendering new ones.
+   * Renders the pins and walls. Previous ones are removed before rendering new ones.
    */
-  private placePins() {
+  private placePinsAndWalls() {
     const { PADDING_X, PADDING_Y, PIN_CATEGORY, BALL_CATEGORY } = PlinkoEngine;
 
     if (this.pins.length > 0) {
       Matter.Composite.remove(this.engine.world, this.pins);
       this.pins = [];
+    }
+    if (this.walls.length > 0) {
+      Matter.Composite.remove(this.engine.world, this.walls);
+      this.walls = [];
     }
 
     for (let row = 0; row < this.rowCount; ++row) {
@@ -225,6 +235,39 @@ class PlinkoEngine {
       }
     }
     Matter.Composite.add(this.engine.world, this.pins);
+
+    const firstPinX = this.pins[0].position.x;
+    const leftWallAngle = Math.atan2(
+      firstPinX - this.pinsLastRowXCoords[0],
+      this.canvas.height - PADDING_Y * 2,
+    );
+    const leftWallX =
+      firstPinX - (firstPinX - this.pinsLastRowXCoords[0]) / 2 - this.pinDistanceX * 0.25;
+
+    const leftWall = Matter.Bodies.rectangle(
+      leftWallX,
+      this.canvas.height / 2,
+      10,
+      this.canvas.height,
+      {
+        isStatic: true,
+        angle: leftWallAngle,
+        render: { visible: false },
+      },
+    );
+    const rightWall = Matter.Bodies.rectangle(
+      this.canvas.width - leftWallX,
+      this.canvas.height / 2,
+      10,
+      this.canvas.height,
+      {
+        isStatic: true,
+        angle: -leftWallAngle,
+        render: { visible: false },
+      },
+    );
+    this.walls.push(leftWall, rightWall);
+    Matter.Composite.add(this.engine.world, this.walls);
   }
 
   private removeAllBalls() {

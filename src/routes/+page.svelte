@@ -9,7 +9,7 @@
   function startDropBallInterval() {
     dropBallInterval = setInterval(() => {
       $plinkoEngine?.dropBall();
-    }, 500);
+    }, 80);
   }
 
   function stopDropBallInterval() {
