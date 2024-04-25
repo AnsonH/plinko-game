@@ -56,7 +56,7 @@ class PlinkoEngine {
    * @param canvas The canvas element to render the game to.
    *
    * @remarks This constructor does NOT start the rendering and physics engine.
-   * Call {@link start} to start the engine.
+   * Call the `start` method to start the engine.
    */
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -128,7 +128,7 @@ class PlinkoEngine {
    * Drops a new ball from the top with a random horizontal offset.
    */
   dropBall() {
-    const ballOffsetRangeX = this.pinDistanceX * 0.8;
+    const ballOffsetRangeX = this.pinDistanceX;
     const ballRadius = this.pinRadius * 2;
 
     const ball = Matter.Bodies.circle(
@@ -139,9 +139,10 @@ class PlinkoEngine {
       0,
       ballRadius,
       {
-        restitution: 0.45, // Bounciness
-        friction: 0.01,
-        frictionAir: 0.02,
+        restitution: 0.8, // Bounciness
+        // Higher friction -> more likely fall into bins at center (lower variance)
+        friction: 0.6,
+        frictionAir: 0.04,
         collisionFilter: {
           category: PlinkoEngine.BALL_CATEGORY,
           mask: PlinkoEngine.PIN_CATEGORY, // Collide with pins only, but not other balls
