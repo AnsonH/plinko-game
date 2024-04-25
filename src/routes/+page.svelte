@@ -6,10 +6,19 @@
 
   let dropBallInterval: number | null = null;
 
+  let ballsDropped = 0;
+
   function startDropBallInterval() {
     dropBallInterval = setInterval(() => {
       $plinkoEngine?.dropBall();
-    }, 80);
+      ++ballsDropped;
+    }, 30);
+  }
+
+  $: {
+    if (ballsDropped >= 1000) {
+      stopDropBallInterval();
+    }
   }
 
   function stopDropBallInterval() {
@@ -20,6 +29,7 @@
   }
 
   $: occurrences = countValueOccurrences($binRecords);
+  $: occurrencesObj = Object.fromEntries(occurrences);
 </script>
 
 <div>
@@ -46,7 +56,8 @@
 <div class="mx-4 my-4">
   Bin History:
   <ul>
-    <li class="font-mono">{JSON.stringify(Object.fromEntries(occurrences))}</li>
-    <li class="font-mono">{JSON.stringify(Array.from(occurrences.values()))}</li>
+    <li class="font-mono">{JSON.stringify(occurrencesObj)}</li>
+    <li class="font-mono">{JSON.stringify(Object.values(occurrencesObj))}</li>
+    <li>Dropped: {ballsDropped}</li>
   </ul>
 </div>
