@@ -204,6 +204,9 @@ class PlinkoEngine {
       Matter.Composite.remove(this.engine.world, this.pins);
       this.pins = [];
     }
+    if (this.pinsLastRowXCoords.length > 0) {
+      this.pinsLastRowXCoords = [];
+    }
     if (this.walls.length > 0) {
       Matter.Composite.remove(this.engine.world, this.walls);
       this.walls = [];
