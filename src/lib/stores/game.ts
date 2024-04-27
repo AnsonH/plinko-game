@@ -1,5 +1,5 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
-import { rowCountOptions } from '$lib/constants/plinko';
+import { rowCountOptions } from '$lib/constants/game';
 import { countValueOccurrences } from '$lib/utils/numbers';
 import { derived, writable } from 'svelte/store';
 

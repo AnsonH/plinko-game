@@ -1,7 +1,7 @@
 <script lang="ts">
   import BinsDistribution from '$lib/components/BinsDistribution.svelte';
   import Plinko from '$lib/components/Plinko';
-  import { rowCountOptions } from '$lib/constants/plinko';
+  import { rowCountOptions } from '$lib/constants/game';
   import { plinkoEngine, rowCount } from '$lib/stores/game';
 
   let dropBallInterval: number | null = null;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { binProbabilitiesByRowCount } from '$lib/constants/plinko';
+  import { binProbabilitiesByRowCount } from '$lib/constants/game';
   import { binProbabilities, rowCount } from '$lib/stores/game';
   import Chart from 'chart.js/auto';
   import { onMount } from 'svelte';
