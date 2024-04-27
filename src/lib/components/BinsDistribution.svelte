@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { binProbabilities } from '$lib/stores/game';
+  import { binProbabilitiesByRowCount } from '$lib/constants/plinko';
+  import { binProbabilities, rowCount } from '$lib/stores/game';
   import Chart from 'chart.js/auto';
   import { onMount } from 'svelte';
 
@@ -8,6 +9,9 @@
 
   $: binIndexes = Object.keys($binProbabilities);
   $: binProbabilitiesInPercent = Object.values($binProbabilities).map((prob) => prob * 100);
+  $: expectedProbabilitiesInPercent = binProbabilitiesByRowCount[$rowCount].map(
+    (prob) => prob * 100,
+  );
 
   onMount(() => {
     chart = new Chart(chartCanvas, {
@@ -18,6 +22,10 @@
           {
             label: 'Bin Probability',
             data: binProbabilitiesInPercent,
+          },
+          {
+            label: 'Expected Probability',
+            data: expectedProbabilitiesInPercent,
           },
         ],
       },
@@ -33,9 +41,7 @@
         plugins: {
           tooltip: {
             callbacks: {
-              label: (context) => {
-                return `${context.dataset.label}: ${context.parsed.y}%`;
-              },
+              label: (context) => `${context.dataset.label}: ${context.parsed.y.toFixed(4)}%`,
             },
           },
         },
@@ -47,6 +53,7 @@
     if (chart) {
       chart.data.labels = binIndexes;
       chart.data.datasets[0].data = binProbabilitiesInPercent;
+      chart.data.datasets[1].data = expectedProbabilitiesInPercent;
       chart.update();
     }
   }

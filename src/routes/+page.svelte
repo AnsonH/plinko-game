@@ -14,13 +14,7 @@
   }
 
   function startDropBallInterval() {
-    dropBallInterval = setInterval(dropSingleBall, 30);
-  }
-
-  $: {
-    if (ballsDropped >= 1000) {
-      stopDropBallInterval();
-    }
+    dropBallInterval = setInterval(dropSingleBall, 15);
   }
 
   function stopDropBallInterval() {

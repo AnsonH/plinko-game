@@ -128,7 +128,7 @@ class PlinkoEngine {
    * Drops a new ball from the top with a random horizontal offset.
    */
   dropBall() {
-    const ballOffsetRangeX = this.pinDistanceX;
+    const ballOffsetRangeX = this.pinDistanceX * 0.8;
     const ballRadius = this.pinRadius * 2;
 
     const ball = Matter.Bodies.circle(
@@ -141,8 +141,10 @@ class PlinkoEngine {
       {
         restitution: 0.8, // Bounciness
         // Higher friction -> more likely fall into bins at center (lower variance)
-        friction: 0.6,
-        frictionAir: 0.04,
+        // These magic numbers are found by trial and error to make the bin distribution follows
+        // the binomial distribution closely.
+        friction: 0.48,
+        frictionAir: 0.0378,
         collisionFilter: {
           category: PlinkoEngine.BALL_CATEGORY,
           mask: PlinkoEngine.PIN_CATEGORY, // Collide with pins only, but not other balls
