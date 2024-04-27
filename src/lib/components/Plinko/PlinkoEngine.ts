@@ -1,4 +1,4 @@
-import { binRecords, rowCount } from '$lib/stores/game';
+import { rowCount, winRecords } from '$lib/stores/game';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter from 'matter-js';
 import { get } from 'svelte/store';
@@ -189,7 +189,7 @@ class PlinkoEngine {
   private handleSensorCollision(ball: Matter.Body) {
     const binNumber = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
     if (binNumber !== -1 && binNumber < this.pinsLastRowXCoords.length - 1) {
-      binRecords.update((records) => [...records, binNumber]);
+      winRecords.update((records) => [...records, { binIndex: binNumber }]);
     }
 
     Matter.Composite.remove(this.engine.world, ball);

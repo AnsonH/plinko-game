@@ -1,18 +1,20 @@
 <script lang="ts">
+  import BinsDistribution from '$lib/components/BinsDistribution.svelte';
   import Plinko from '$lib/components/Plinko';
   import { rowCountOptions } from '$lib/constants/plinko';
-  import { binRecords, plinkoEngine, rowCount } from '$lib/stores/game';
-  import { countValueOccurrences } from '$lib/utils/numbers';
+  import { plinkoEngine, rowCount } from '$lib/stores/game';
 
   let dropBallInterval: number | null = null;
 
   let ballsDropped = 0;
 
+  function dropSingleBall() {
+    $plinkoEngine?.dropBall();
+    ballsDropped += 1;
+  }
+
   function startDropBallInterval() {
-    dropBallInterval = setInterval(() => {
-      $plinkoEngine?.dropBall();
-      ++ballsDropped;
-    }, 30);
+    dropBallInterval = setInterval(dropSingleBall, 30);
   }
 
   $: {
@@ -27,9 +29,6 @@
       dropBallInterval = null;
     }
   }
-
-  $: occurrences = countValueOccurrences($binRecords);
-  $: occurrencesObj = Object.fromEntries(occurrences);
 </script>
 
 <div>
@@ -45,19 +44,17 @@
     </select>
   </div>
 
-  <button on:click={() => $plinkoEngine?.dropBall()}>Drop Ball</button>
+  <button on:click={dropSingleBall} class="bg-cyan-100 p-2">Drop Ball</button>
 
   {#if dropBallInterval === null}
-    <button on:click={startDropBallInterval}>Start Auto Drop</button>
+    <button on:click={startDropBallInterval} class="bg-cyan-100 p-2">Start Auto Drop</button>
   {:else}
-    <button on:click={stopDropBallInterval}>Stop Auto Drop</button>
+    <button on:click={stopDropBallInterval} class="bg-cyan-100 p-2">Stop Auto Drop</button>
   {/if}
+
+  <p>Dropped: <span>{ballsDropped}</span></p>
 </div>
-<div class="mx-4 my-4">
-  Bin History:
-  <ul>
-    <li class="font-mono">{JSON.stringify(occurrencesObj)}</li>
-    <li class="font-mono">{JSON.stringify(Object.values(occurrencesObj))}</li>
-    <li>Dropped: {ballsDropped}</li>
-  </ul>
+
+<div class="mx-4 my-8">
+  <BinsDistribution />
 </div>

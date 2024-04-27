@@ -1,12 +1,12 @@
 /**
  * Counts how many times each value occurs in the given array.
  */
-export function countValueOccurrences(values: number[]): Map<number, number> {
-  const valueCounts = new Map<number, number>();
+export function countValueOccurrences<T extends string | number>(values: T[]): Record<T, number> {
+  const result = {} as Record<T, number>;
   for (const value of values) {
-    valueCounts.set(value, (valueCounts.get(value) ?? 0) + 1);
+    result[value] = (result[value] || 0) + 1;
   }
-  return valueCounts;
+  return result;
 }
 
 /**
