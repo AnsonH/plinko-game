@@ -1,20 +1,20 @@
 <script lang="ts">
   import { plinkoEngine } from '$lib/stores/game';
-  import { onMount } from 'svelte';
+  import type { Action } from 'svelte/action';
   import PlinkoEngine from './PlinkoEngine';
 
-  let canvas: HTMLCanvasElement;
-
-  onMount(() => {
-    $plinkoEngine = new PlinkoEngine(canvas);
+  const initPlinko: Action<HTMLCanvasElement> = (node) => {
+    $plinkoEngine = new PlinkoEngine(node);
     $plinkoEngine.start();
 
-    return () => {
-      $plinkoEngine?.stop();
+    return {
+      destroy: () => {
+        $plinkoEngine?.stop();
+      },
     };
-  });
+  };
 </script>
 
 <div class="w-fit">
-  <canvas bind:this={canvas} width={PlinkoEngine.WIDTH} height={PlinkoEngine.HEIGHT} />
+  <canvas use:initPlinko width={PlinkoEngine.WIDTH} height={PlinkoEngine.HEIGHT} />
 </div>
