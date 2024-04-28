@@ -2,10 +2,7 @@
   import { binProbabilitiesByRowCount } from '$lib/constants/game';
   import { binProbabilities, rowCount } from '$lib/stores/game';
   import Chart from 'chart.js/auto';
-  import { onMount } from 'svelte';
-
-  let chart: Chart | null;
-  let chartCanvas: HTMLCanvasElement;
+  import type { Action } from 'svelte/action';
 
   $: binIndexes = Object.keys($binProbabilities);
   $: binProbabilitiesInPercent = Object.values($binProbabilities).map((prob) => prob * 100);
@@ -13,23 +10,28 @@
     (prob) => prob * 100,
   );
 
-  onMount(() => {
-    chart = new Chart(chartCanvas, {
+  const initChart: Action<
+    HTMLCanvasElement,
+    { labels: string[]; binProbabilities: number[]; expectedProbabilities: number[] }
+  > = (node, { labels, binProbabilities, expectedProbabilities }) => {
+    const chart = new Chart(node, {
       type: 'bar',
       data: {
-        labels: binIndexes,
+        labels,
         datasets: [
           {
             label: 'Bin Probability',
-            data: binProbabilitiesInPercent,
+            data: binProbabilities,
           },
           {
             label: 'Expected Probability',
-            data: expectedProbabilitiesInPercent,
+            data: expectedProbabilities,
           },
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             title: { display: true, text: 'Bin Number' },
@@ -47,23 +49,32 @@
         },
       },
     });
-  });
 
-  $: {
-    if (chart) {
-      chart.data.labels = binIndexes;
-      chart.data.datasets[0].data = binProbabilitiesInPercent;
-      chart.data.datasets[1].data = expectedProbabilitiesInPercent;
-      chart.update();
-    }
-  }
+    return {
+      update: ({ labels, binProbabilities, expectedProbabilities }) => {
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = binProbabilities;
+        chart.data.datasets[1].data = expectedProbabilities;
+        chart.update();
+      },
+      destroy: () => {
+        chart.destroy();
+      },
+    };
+  };
 </script>
 
 <h2 class="mb-3 text-xl font-semibold">Bins Distribution</h2>
-<div class="h-[350px] w-[700px]">
-  <canvas bind:this={chartCanvas} />
+<div class="h-[400px] w-[800px]">
+  <canvas
+    use:initChart={{
+      labels: binIndexes,
+      binProbabilities: binProbabilitiesInPercent,
+      expectedProbabilities: expectedProbabilitiesInPercent,
+    }}
+  />
 </div>
-<table class="mt-4 text-sm">
+<table class="mt-4 text-xs">
   <thead>
     <tr>
       {#each binIndexes as binIndex}
@@ -74,7 +85,7 @@
   <tbody>
     <tr>
       {#each binProbabilitiesInPercent as probPercent}
-        <td class="w-20 px-2 py-1 tabular-nums">{probPercent.toFixed(2)}%</td>
+        <td class="w-20 px-2 py-1 tabular-nums">{probPercent.toFixed(4)}%</td>
       {/each}
     </tr>
   </tbody>
