@@ -48,13 +48,15 @@ class PlinkoEngine {
    */
   private sensor: Matter.Body;
 
-  static PIN_CATEGORY = 0x0001;
-  static BALL_CATEGORY = 0x0002;
-
   static WIDTH = 760;
   static HEIGHT = 570;
-  static PADDING_X = 52;
-  static PADDING_Y = 36;
+
+  private static PADDING_X = 52;
+  private static PADDING_TOP = 36;
+  private static PADDING_BOTTOM = 28;
+
+  private static PIN_CATEGORY = 0x0001;
+  private static BALL_CATEGORY = 0x0002;
 
   /**
    * Friction parameters to be applied to the ball body.
@@ -227,7 +229,7 @@ class PlinkoEngine {
    * Renders the pins and walls. Previous ones are removed before rendering new ones.
    */
   private placePinsAndWalls() {
-    const { PADDING_X, PADDING_Y, PIN_CATEGORY, BALL_CATEGORY } = PlinkoEngine;
+    const { PADDING_X, PADDING_TOP, PADDING_BOTTOM, PIN_CATEGORY, BALL_CATEGORY } = PlinkoEngine;
 
     if (this.pins.length > 0) {
       Matter.Composite.remove(this.engine.world, this.pins);
@@ -242,7 +244,9 @@ class PlinkoEngine {
     }
 
     for (let row = 0; row < this.rowCount; ++row) {
-      const rowY = PADDING_Y + ((this.canvas.height - PADDING_Y * 2) / (this.rowCount - 1)) * row;
+      const rowY =
+        PADDING_TOP +
+        ((this.canvas.height - PADDING_TOP - PADDING_BOTTOM) / (this.rowCount - 1)) * row;
 
       /** Horizontal distance between canvas left/right boundary and first/last pin of the row. */
       const rowPaddingX = PADDING_X + ((this.rowCount - 1 - row) * this.pinDistanceX) / 2;
@@ -271,7 +275,7 @@ class PlinkoEngine {
     const firstPinX = this.pins[0].position.x;
     const leftWallAngle = Math.atan2(
       firstPinX - this.pinsLastRowXCoords[0],
-      this.canvas.height - PADDING_Y * 2,
+      this.canvas.height - PADDING_TOP - PADDING_BOTTOM,
     );
     const leftWallX =
       firstPinX - (firstPinX - this.pinsLastRowXCoords[0]) / 2 - this.pinDistanceX * 0.25;
