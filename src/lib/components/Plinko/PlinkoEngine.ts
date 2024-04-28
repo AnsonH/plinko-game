@@ -1,7 +1,14 @@
 import { rowCount, winRecords } from '$lib/stores/game';
 import { getRandomBetween } from '$lib/utils/numbers';
-import Matter from 'matter-js';
+import Matter, { type IBodyDefinition } from 'matter-js';
 import { get } from 'svelte/store';
+
+type BallFrictionsByRowCount = {
+  friction: NonNullable<IBodyDefinition['friction']>;
+  frictionAirByRowCount: {
+    [rowCount: number]: NonNullable<IBodyDefinition['frictionAir']>;
+  };
+};
 
 /**
  * Engine for rendering the Plinko game using [matter-js](https://brm.io/matter-js/).
@@ -49,6 +56,28 @@ class PlinkoEngine {
   static HEIGHT = 570;
   static PADDING_X = 52;
   static PADDING_Y = 36;
+
+  /**
+   * Friction parameters to be applied to the ball body.
+   *
+   * Higher friction leads to more concentrated distribution towards the center. These numbers
+   * are found by trial and error to make the actual bin distribution as close as the expected
+   * binomial distribution.
+   */
+  private static ballFrictions: BallFrictionsByRowCount = {
+    friction: 0.5,
+    frictionAirByRowCount: {
+      8: 0.0378,
+      9: 0.04,
+      10: 0.036,
+      11: 0.033,
+      12: 0.0398,
+      13: 0.0405,
+      14: 0.0401,
+      15: 0.0425,
+      16: 0.038,
+    },
+  };
 
   /**
    * Creates the engine and the game's layout.
@@ -130,6 +159,7 @@ class PlinkoEngine {
   dropBall() {
     const ballOffsetRangeX = this.pinDistanceX * 0.8;
     const ballRadius = this.pinRadius * 2;
+    const { friction, frictionAirByRowCount } = PlinkoEngine.ballFrictions;
 
     const ball = Matter.Bodies.circle(
       getRandomBetween(
@@ -140,11 +170,8 @@ class PlinkoEngine {
       ballRadius,
       {
         restitution: 0.8, // Bounciness
-        // Higher friction -> more likely fall into bins at center (lower variance)
-        // These magic numbers are found by trial and error to make the bin distribution follows
-        // the binomial distribution closely.
-        friction: 0.48,
-        frictionAir: 0.0378,
+        friction,
+        frictionAir: frictionAirByRowCount[this.rowCount],
         collisionFilter: {
           category: PlinkoEngine.BALL_CATEGORY,
           mask: PlinkoEngine.PIN_CATEGORY, // Collide with pins only, but not other balls

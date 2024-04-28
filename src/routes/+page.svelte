@@ -14,7 +14,7 @@
   }
 
   function startDropBallInterval() {
-    dropBallInterval = setInterval(dropSingleBall, 15);
+    dropBallInterval = setInterval(dropSingleBall, 10);
   }
 
   function stopDropBallInterval() {
