@@ -1,21 +1,12 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
 import { rowCountOptions } from '$lib/constants/game';
+import type { RowCount, WinRecord } from '$lib/types';
 import { countValueOccurrences } from '$lib/utils/numbers';
 import { derived, writable } from 'svelte/store';
 
-type WinRecord = {
-  /**
-   * Zero-based index of which bin the ball fell into (leftmost bin is 0).
-   */
-  binIndex: number;
-};
-
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
 
-/**
- * Number of rows of pins.
- */
-export const rowCount = writable(rowCountOptions[0]);
+export const rowCount = writable<RowCount>(rowCountOptions[0]);
 
 export const winRecords = writable<WinRecord[]>([]);
 

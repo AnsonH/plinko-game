@@ -1,17 +1,22 @@
-import { computeBinProbabilities, getIntegersBetween } from '$lib/utils/numbers';
+import { computeBinProbabilities } from '$lib/utils/numbers';
 
 /**
  * Range of row counts the game supports.
  */
-export const rowCountOptions = getIntegersBetween(8, 16);
+export const rowCountOptions = [8, 9, 10, 11, 12, 13, 14, 15, 16] as const;
 
 /**
- * Key is the row count and value is the probabilities of a ball falling into each bin.
+ * Number of rows of pins the game supports.
  */
-export const binProbabilitiesByRowCount: Record<number, number[]> = rowCountOptions.reduce(
+export type RowCount = (typeof rowCountOptions)[number];
+
+/**
+ * For each row count, what's the probabilities of a ball falling into each bin.
+ */
+export const binProbabilitiesByRowCount: Record<RowCount, number[]> = rowCountOptions.reduce(
   (acc, rowCount) => {
     acc[rowCount] = computeBinProbabilities(rowCount);
     return acc;
   },
-  {} as Record<number, number[]>,
+  {} as Record<RowCount, number[]>,
 );

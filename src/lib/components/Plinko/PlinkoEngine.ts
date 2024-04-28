@@ -1,13 +1,12 @@
 import { rowCount, winRecords } from '$lib/stores/game';
+import type { RowCount } from '$lib/types';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter, { type IBodyDefinition } from 'matter-js';
 import { get } from 'svelte/store';
 
 type BallFrictionsByRowCount = {
   friction: NonNullable<IBodyDefinition['friction']>;
-  frictionAirByRowCount: {
-    [rowCount: number]: NonNullable<IBodyDefinition['frictionAir']>;
-  };
+  frictionAirByRowCount: Record<RowCount, NonNullable<IBodyDefinition['frictionAir']>>;
 };
 
 /**
@@ -25,7 +24,7 @@ class PlinkoEngine {
    * A cache value of the {@link rowCount} store for faster access. It's updated
    * when the store value changes.
    */
-  private rowCount: number;
+  private rowCount: RowCount;
   /**
    * The x-coordinates of every pin's center in the last row. Useful for calculating
    * which bin a ball falls into.
@@ -201,7 +200,7 @@ class PlinkoEngine {
    *
    * Does nothing if the new row count equals the current count.
    */
-  private updateRowCount(rowCount: number) {
+  private updateRowCount(rowCount: RowCount) {
     if (rowCount === this.rowCount) {
       return;
     }

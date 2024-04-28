@@ -1,3 +1,5 @@
+import type { RowCount } from '$lib/types';
+
 /**
  * Calculate the probabilities of a ball falling into each bin (from left to right).
  *
@@ -10,7 +12,7 @@
  *
  * , where `C(n, k) = n! / (k! * (n - k)!)` and `p = 0.5`.
  */
-export function computeBinProbabilities(rowCount: number): number[] {
+export function computeBinProbabilities(rowCount: RowCount): number[] {
   const p = 0.5; // probability of success on a single trial
   const probabilities = [];
 
@@ -47,11 +49,4 @@ export function factorial(n: number): number {
  */
 export function getRandomBetween(min: number, max: number): number {
   return min + Math.random() * (max - min);
-}
-
-/**
- * Returns all integers between `min` and `max` (inclusive).
- */
-export function getIntegersBetween(min: number, max: number): number[] {
-  return Array.from({ length: max - min + 1 }, (_, idx) => min + idx);
 }
