@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   computeBinProbabilities,
   countValueOccurrences,
+  dotProduct,
   factorial,
   getRandomBetween,
 } from '../numbers';
@@ -33,6 +34,14 @@ describe('countValueOccurrences', () => {
       4: 1,
     });
     expect(countValueOccurrences([])).toEqual({});
+  });
+});
+
+describe('dotProduct', () => {
+  it('computes the dot product of two 1D vectors', () => {
+    expect(dotProduct([1, 2, 3], [4, 5, 6])).toBe(32);
+    expect(dotProduct([-1, 4, 2, 1], [1, -2, 3, 2])).toBe(-1);
+    expect(dotProduct([], [])).toBe(0);
   });
 });
 

@@ -36,6 +36,20 @@ export function countValueOccurrences<T extends string | number>(values: T[]): R
   return result;
 }
 
+/**
+ * Computes the dot product of two vectors.
+ *
+ * @remarks The two vectors must have the same length.
+ *
+ * @example
+ * const a = [1, 2, 3];
+ * const b = [4, 5, 6];
+ * dotProduct(a, b); // 32  (1*4 + 2*5 + 3*6)
+ */
+export function dotProduct(a: number[], b: number[]): number {
+  return a.reduce((acc, value, index) => acc + value * b[index], 0);
+}
+
 export function factorial(n: number): number {
   let result = 1;
   for (let i = 2; i <= n; i++) {

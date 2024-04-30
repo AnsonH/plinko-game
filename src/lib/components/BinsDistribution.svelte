@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { binProbabilitiesByRowCount } from '$lib/constants/game';
+  import { binPayouts, binProbabilitiesByRowCount, type RowCount } from '$lib/constants/game';
   import { binProbabilities, rowCount } from '$lib/stores/game';
+  import { RiskLevel } from '$lib/types';
+  import { dotProduct } from '$lib/utils/numbers';
   import Chart from 'chart.js/auto';
   import type { Action } from 'svelte/action';
 
@@ -9,6 +11,12 @@
   $: expectedProbabilitiesInPercent = binProbabilitiesByRowCount[$rowCount].map(
     (prob) => prob * 100,
   );
+
+  const getWeightedPayout = (
+    rowCount: RowCount,
+    riskLevel: RiskLevel,
+    binProbabilities: number[],
+  ) => dotProduct(binPayouts[rowCount][riskLevel], binProbabilities);
 
   const initChart: Action<
     HTMLCanvasElement,
@@ -74,7 +82,7 @@
     }}
   />
 </div>
-<table class="mt-4 text-xs">
+<table class="my-4 text-xs">
   <thead>
     <tr>
       {#each binIndexes as binIndex}
@@ -88,5 +96,29 @@
         <td class="w-20 px-2 py-1 tabular-nums">{probPercent.toFixed(4)}%</td>
       {/each}
     </tr>
+  </tbody>
+</table>
+<table class="my-4 text-sm">
+  <thead>
+    <tr>
+      <th class="px-2 py-1 text-left">Risk</th>
+      <th class="px-2 py-1 text-left">Expected value</th>
+      <th class="px-2 py-1 text-left">Actual value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each [RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH] as riskLevel}
+      <tr>
+        <td class="px-2 py-1">{riskLevel}</td>
+        <td class="px-2 py-1 tabular-nums">
+          {getWeightedPayout($rowCount, riskLevel, binProbabilitiesByRowCount[$rowCount]).toFixed(
+            5,
+          )}
+        </td>
+        <td class="px-2 py-1 tabular-nums">
+          {getWeightedPayout($rowCount, riskLevel, Object.values($binProbabilities)).toFixed(5)}
+        </td>
+      </tr>
+    {/each}
   </tbody>
 </table>
