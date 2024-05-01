@@ -62,21 +62,21 @@ class PlinkoEngine {
    * Friction parameters to be applied to the ball body.
    *
    * Higher friction leads to more concentrated distribution towards the center. These numbers
-   * are found by trial and error to make the actual bin distribution as close as the expected
-   * binomial distribution.
+   * are found by trial and error to make the actual weighted bin payout very close to the
+   * expected bin payout.
    */
   private static ballFrictions: BallFrictionsByRowCount = {
     friction: 0.5,
     frictionAirByRowCount: {
-      8: 0.0378,
-      9: 0.04,
-      10: 0.036,
-      11: 0.033,
-      12: 0.0398,
-      13: 0.0405,
+      8: 0.0395,
+      9: 0.041,
+      10: 0.038,
+      11: 0.0355,
+      12: 0.0414,
+      13: 0.0437,
       14: 0.0401,
-      15: 0.0425,
-      16: 0.038,
+      15: 0.0418,
+      16: 0.0364,
     },
   };
 
