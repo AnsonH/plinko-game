@@ -1,8 +1,10 @@
 <script lang="ts">
   import BinsDistribution from '$lib/components/BinsDistribution.svelte';
   import Plinko from '$lib/components/Plinko';
+  import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
   import { rowCountOptions } from '$lib/constants/game';
-  import { plinkoEngine, rowCount } from '$lib/stores/game';
+  import { plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
+  import { RiskLevel } from '$lib/types';
 
   let dropBallInterval: number | null = null;
 
@@ -25,15 +27,24 @@
   }
 </script>
 
-<div>
+<div class="w-fit">
   <Plinko />
 </div>
 <div class="mx-4 my-8 flex items-center gap-16">
-  <div class="flex items-center gap-8">
-    <label for="rows">Rows</label>
-    <select bind:value={$rowCount} class="border border-gray-400 p-2">
+  <div class="flex items-center gap-4">
+    <label for="rowCount">Rows</label>
+    <select id="rowCount" bind:value={$rowCount} class="border border-gray-400 p-2">
       {#each rowCountOptions as rows}
         <option value={rows}>{rows}</option>
+      {/each}
+    </select>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <label for="riskLevel">Risk</label>
+    <select id="riskLevel" bind:value={$riskLevel} class="border border-gray-400 p-2">
+      {#each [RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH] as riskLevel}
+        <option value={riskLevel}>{riskLevel}</option>
       {/each}
     </select>
   </div>

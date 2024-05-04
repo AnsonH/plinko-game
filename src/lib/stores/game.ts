@@ -1,12 +1,14 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
 import { rowCountOptions } from '$lib/constants/game';
-import type { RowCount, WinRecord } from '$lib/types';
+import { RiskLevel, type RowCount, type WinRecord } from '$lib/types';
 import { countValueOccurrences } from '$lib/utils/numbers';
 import { derived, writable } from 'svelte/store';
 
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
 
 export const rowCount = writable<RowCount>(rowCountOptions[0]);
+
+export const riskLevel = writable<RiskLevel>(RiskLevel.LOW);
 
 export const winRecords = writable<WinRecord[]>([]);
 

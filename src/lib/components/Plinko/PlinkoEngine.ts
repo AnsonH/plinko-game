@@ -186,6 +186,14 @@ class PlinkoEngine {
   }
 
   /**
+   * Total width of all bins as percentage of the canvas width.
+   */
+  get binsWidthPercentage(): number {
+    const lastPinX = this.pinsLastRowXCoords[this.pinsLastRowXCoords.length - 1];
+    return (lastPinX - this.pinsLastRowXCoords[0]) / PlinkoEngine.WIDTH;
+  }
+
+  /**
    * Gets the horizontal distance between each pin's center point.
    */
   private get pinDistanceX(): number {

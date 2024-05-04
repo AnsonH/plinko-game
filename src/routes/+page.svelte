@@ -15,9 +15,7 @@
       <div class="flex w-full overflow-hidden rounded-lg">
         <Sidebar />
         <div class="flex-1 bg-gray-900">
-          <div class="mx-auto h-full max-w-[760px]">
-            <Plinko />
-          </div>
+          <Plinko />
         </div>
       </div>
     </div>
