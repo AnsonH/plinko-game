@@ -1,16 +1,34 @@
 <script lang="ts">
   import { rowCountOptions } from '$lib/constants/game';
-  import { plinkoEngine, rowCount } from '$lib/stores/game';
+  import { plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
+  import { RiskLevel } from '$lib/types';
+
+  const riskLevels = [
+    { value: RiskLevel.LOW, label: 'Low' },
+    { value: RiskLevel.MEDIUM, label: 'Medium' },
+    { value: RiskLevel.HIGH, label: 'High' },
+  ];
 </script>
 
 <div class="flex min-w-[300px] flex-col gap-4 bg-gray-700 p-3">
   <div>
+    <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
+    <select
+      id="riskLevel"
+      bind:value={$riskLevel}
+      class="block w-full rounded-md border-2 border-gray-600 bg-gray-900 p-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500"
+    >
+      {#each riskLevels as { value, label }}
+        <option {value}>{label}</option>
+      {/each}
+    </select>
+  </div>
+  <div>
     <label for="rowCount" class="text-sm font-medium text-gray-300">Rows</label>
-    <!-- TODO: Custom dropdown component -->
     <select
       id="rowCount"
       bind:value={$rowCount}
-      class="block w-full rounded-sm border-2 border-gray-500 bg-gray-900 p-1 text-white"
+      class="block w-full rounded-md border-2 border-gray-600 bg-gray-900 p-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500"
     >
       {#each rowCountOptions as rows}
         <option value={rows}>{rows}</option>
