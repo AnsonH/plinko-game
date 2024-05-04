@@ -65,7 +65,7 @@
           class="flex flex-1 items-center justify-center rounded-md text-xs font-bold text-gray-950"
           style:background-color={binColors[binIndex]}
         >
-          {payout}×
+          {payout}{payout < 100 ? '×' : ''}
         </div>
       {/each}
     </div>
