@@ -57,15 +57,17 @@
 </script>
 
 <div class="flex h-7 w-full justify-center">
-  <div class="flex gap-[1%]" style:width={`${($plinkoEngine?.binsWidthPercentage ?? 0) * 100}%`}>
-    {#each binPayouts[$rowCount][$riskLevel] as payout, binIndex}
-      <div
-        use:initAnimation
-        class="flex flex-1 items-center justify-center rounded-md text-xs font-bold text-gray-950"
-        style:background-color={binColors[binIndex]}
-      >
-        {payout}×
-      </div>
-    {/each}
-  </div>
+  {#if $plinkoEngine}
+    <div class="flex gap-[1%]" style:width={`${($plinkoEngine.binsWidthPercentage ?? 0) * 100}%`}>
+      {#each binPayouts[$rowCount][$riskLevel] as payout, binIndex}
+        <div
+          use:initAnimation
+          class="flex flex-1 items-center justify-center rounded-md text-xs font-bold text-gray-950"
+          style:background-color={binColors[binIndex]}
+        >
+          {payout}×
+        </div>
+      {/each}
+    </div>
+  {/if}
 </div>
