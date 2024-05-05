@@ -1,7 +1,6 @@
 <script lang="ts">
   import BinsDistribution from '$lib/components/BinsDistribution.svelte';
   import Plinko from '$lib/components/Plinko';
-  import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
   import { rowCountOptions } from '$lib/constants/game';
   import { plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';

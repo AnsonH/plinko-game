@@ -45,16 +45,28 @@
     animation.play();
   }
 
-  function getBinColors(binCount: number): string[] {
+  function getBinColors(binCount: number): { background: string[]; shadow: string[] } {
     const redToYellowLength = Math.ceil(binCount / 2);
+    const isBinsEven = binCount % 2 === 0;
 
-    const RED = { r: 255, g: 0, b: 63 }; // rgb(255, 0, 63)
-    const YELLOW = { r: 255, g: 192, b: 0 }; // rgb(255, 192, 0)
-
-    const redToYellow = interpolateRgbColors(RED, YELLOW, redToYellowLength).map(
+    const RED_BG = { r: 255, g: 0, b: 63 }; // rgb(255, 0, 63)
+    const YELLOW_BG = { r: 255, g: 192, b: 0 }; // rgb(255, 192, 0)
+    const redToYellowBg = interpolateRgbColors(RED_BG, YELLOW_BG, redToYellowLength).map(
       ({ r, g, b }) => `rgb(${r}, ${g}, ${b})`,
     );
-    return [...redToYellow, ...redToYellow.reverse().slice(binCount % 2 === 0 ? 0 : 1)];
+
+    const RED_SHADOW = { r: 166, g: 0, b: 4 }; // rgb(166, 0, 4)
+    const YELLOW_SHADOW = { r: 171, g: 121, b: 0 }; // rgb(171, 121, 0)
+    const redToYellowShadow = interpolateRgbColors(
+      RED_SHADOW,
+      YELLOW_SHADOW,
+      redToYellowLength,
+    ).map(({ r, g, b }) => `rgb(${r}, ${g}, ${b})`);
+
+    return {
+      background: [...redToYellowBg, ...redToYellowBg.reverse().slice(isBinsEven ? 0 : 1)],
+      shadow: [...redToYellowShadow, ...redToYellowShadow.reverse().slice(isBinsEven ? 0 : 1)],
+    };
   }
 </script>
 
@@ -69,8 +81,9 @@
          -->
         <div
           use:initAnimation
-          class="flex min-w-0 flex-1 items-center justify-center rounded-sm text-[clamp(6px,2.784px+0.87vw,8px)] font-bold text-gray-950 lg:rounded-md lg:text-[clamp(10px,-16.944px+2.632vw,12px)]"
-          style:background-color={binColors[binIndex]}
+          class="flex min-w-0 flex-1 items-center justify-center rounded-sm text-[clamp(6px,2.784px+0.87vw,8px)] font-bold text-gray-950 shadow-[0_2px_var(--shadow-color)] lg:rounded-md lg:text-[clamp(10px,-16.944px+2.632vw,12px)] lg:shadow-[0_3px_var(--shadow-color)]"
+          style:background-color={binColors.background[binIndex]}
+          style:--shadow-color={binColors.shadow[binIndex]}
         >
           {payout}{payout < 100 ? '×' : ''}
         </div>
