@@ -3,7 +3,7 @@
   import Sidebar from '$lib/components/Sidebar.svelte';
 </script>
 
-<div class="min-h-screen w-full">
+<div class="min-h-dvh w-full">
   <nav class="sticky top-0 z-10 w-full bg-gray-700 px-5 drop-shadow-lg">
     <div class="mx-auto flex h-14 max-w-7xl items-center justify-between">
       <!-- TODO: Design a logo -->
