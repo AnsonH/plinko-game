@@ -1,16 +1,12 @@
 <script lang="ts">
   import { binPayouts } from '$lib/constants/game';
-  import { plinkoEngine, riskLevel, rowCount, winRecords } from '$lib/stores/game';
-  import { interpolateRgbColors } from '$lib/utils/colors';
+  import { binColors, plinkoEngine, riskLevel, rowCount, winRecords } from '$lib/stores/game';
   import type { Action } from 'svelte/action';
 
   /**
    * Bounce animations for each bin, which is played when a ball falls into the bin.
    */
   let binAnimations: Animation[] = [];
-
-  $: binCount = $rowCount + 1;
-  $: binColors = getBinColors(binCount);
 
   $: {
     if ($winRecords.length) {
@@ -44,30 +40,6 @@
 
     animation.play();
   }
-
-  function getBinColors(binCount: number): { background: string[]; shadow: string[] } {
-    const redToYellowLength = Math.ceil(binCount / 2);
-    const isBinsEven = binCount % 2 === 0;
-
-    const RED_BG = { r: 255, g: 0, b: 63 }; // rgb(255, 0, 63)
-    const YELLOW_BG = { r: 255, g: 192, b: 0 }; // rgb(255, 192, 0)
-    const redToYellowBg = interpolateRgbColors(RED_BG, YELLOW_BG, redToYellowLength).map(
-      ({ r, g, b }) => `rgb(${r}, ${g}, ${b})`,
-    );
-
-    const RED_SHADOW = { r: 166, g: 0, b: 4 }; // rgb(166, 0, 4)
-    const YELLOW_SHADOW = { r: 171, g: 121, b: 0 }; // rgb(171, 121, 0)
-    const redToYellowShadow = interpolateRgbColors(
-      RED_SHADOW,
-      YELLOW_SHADOW,
-      redToYellowLength,
-    ).map(({ r, g, b }) => `rgb(${r}, ${g}, ${b})`);
-
-    return {
-      background: [...redToYellowBg, ...redToYellowBg.reverse().slice(isBinsEven ? 0 : 1)],
-      shadow: [...redToYellowShadow, ...redToYellowShadow.reverse().slice(isBinsEven ? 0 : 1)],
-    };
-  }
 </script>
 
 <!-- Height clamping in mobile: From 10px at 370px viewport width to 16px at 600px viewport width -->
@@ -82,8 +54,8 @@
         <div
           use:initAnimation
           class="flex min-w-0 flex-1 items-center justify-center rounded-sm text-[clamp(6px,2.784px+0.87vw,8px)] font-bold text-gray-950 shadow-[0_2px_var(--shadow-color)] lg:rounded-md lg:text-[clamp(10px,-16.944px+2.632vw,12px)] lg:shadow-[0_3px_var(--shadow-color)]"
-          style:background-color={binColors.background[binIndex]}
-          style:--shadow-color={binColors.shadow[binIndex]}
+          style:background-color={$binColors.background[binIndex]}
+          style:--shadow-color={$binColors.shadow[binIndex]}
         >
           {payout}{payout < 100 ? '×' : ''}
         </div>

@@ -1,5 +1,7 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
+import { binColor } from '$lib/constants/game';
 import { RiskLevel, type RowCount, type WinRecord } from '$lib/types';
+import { interpolateRgbColors } from '$lib/utils/colors';
 import { countValueOccurrences } from '$lib/utils/numbers';
 import { derived, writable } from 'svelte/store';
 
@@ -10,6 +12,35 @@ export const rowCount = writable<RowCount>(16);
 export const riskLevel = writable<RiskLevel>(RiskLevel.MEDIUM);
 
 export const winRecords = writable<WinRecord[]>([]);
+
+/**
+ * RGB colors for every bin. The length of the array is the number of bins.
+ */
+export const binColors = derived<typeof rowCount, { background: string[]; shadow: string[] }>(
+  rowCount,
+  ($rowCount) => {
+    const binCount = $rowCount + 1;
+    const isBinsEven = binCount % 2 === 0;
+    const redToYellowLength = Math.ceil(binCount / 2);
+
+    const redToYellowBg = interpolateRgbColors(
+      binColor.background.red,
+      binColor.background.yellow,
+      redToYellowLength,
+    ).map(({ r, g, b }) => `rgb(${r}, ${g}, ${b})`);
+
+    const redToYellowShadow = interpolateRgbColors(
+      binColor.shadow.red,
+      binColor.shadow.yellow,
+      redToYellowLength,
+    ).map(({ r, g, b }) => `rgb(${r}, ${g}, ${b})`);
+
+    return {
+      background: [...redToYellowBg, ...redToYellowBg.reverse().slice(isBinsEven ? 0 : 1)],
+      shadow: [...redToYellowShadow, ...redToYellowShadow.reverse().slice(isBinsEven ? 0 : 1)],
+    };
+  },
+);
 
 export const binProbabilities = derived<
   [typeof winRecords, typeof rowCount],

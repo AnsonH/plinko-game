@@ -72,3 +72,14 @@ export const binPayouts: Record<RowCount, Record<RiskLevel, number[]>> = {
     [RiskLevel.HIGH]: [1000, 130, 26, 9, 4, 2, 0.2, 0.2, 0.2, 0.2, 0.2, 2, 4, 9, 26, 130, 1000],
   },
 };
+
+export const binColor = {
+  background: {
+    red: { r: 255, g: 0, b: 63 }, // rgb(255, 0, 63)
+    yellow: { r: 255, g: 192, b: 0 }, // rgb(255, 192, 0)
+  },
+  shadow: {
+    red: { r: 166, g: 0, b: 4 }, // rgb(166, 0, 4)
+    yellow: { r: 171, g: 121, b: 0 }, // rgb(171, 121, 0)
+  },
+} as const;
