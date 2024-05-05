@@ -1,4 +1,5 @@
 <script lang="ts">
+  import logo from '$lib/assets/logo.svg';
   import Plinko from '$lib/components/Plinko';
   import Sidebar from '$lib/components/Sidebar.svelte';
 </script>
@@ -6,8 +7,7 @@
 <div class="min-h-dvh w-full">
   <nav class="sticky top-0 z-10 w-full bg-gray-700 px-5 drop-shadow-lg">
     <div class="mx-auto flex h-14 max-w-7xl items-center justify-between">
-      <!-- TODO: Design a logo -->
-      <p class="text-xl font-medium text-white md:text-2xl">Plinko</p>
+      <img src={logo} alt="logo" class="h-7" />
     </div>
   </nav>
   <div class="px-5">

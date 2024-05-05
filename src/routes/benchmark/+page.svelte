@@ -27,6 +27,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Plinko - Benchmark</title>
+</svelte:head>
+
 <div class="h-[570px] w-[760px] bg-gray-900">
   <Plinko />
 </div>
