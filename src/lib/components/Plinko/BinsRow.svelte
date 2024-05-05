@@ -35,6 +35,7 @@
     binAnimations.push(bounceAnimation);
   };
 
+  // FIXME: On Safari, animation only plays once
   function playAnimation(binIndex: number) {
     const animation = binAnimations[binIndex];
     if (animation.playState === 'running') {
@@ -56,13 +57,18 @@
   }
 </script>
 
-<div class="flex h-7 w-full justify-center">
+<!-- Height clamping in mobile: From 10px at 370px viewport width to 16px at 600px viewport width -->
+<div class="flex h-[clamp(10px,0.352px+2.609vw,16px)] w-full justify-center lg:h-7">
   {#if $plinkoEngine}
     <div class="flex gap-[1%]" style:width={`${($plinkoEngine.binsWidthPercentage ?? 0) * 100}%`}>
       {#each binPayouts[$rowCount][$riskLevel] as payout, binIndex}
+        <!-- Font-size clamping:
+              - Mobile (< 1024px): From 6px at 370px viewport width to 8px at 600px viewport width
+              - Desktop (>= 1024px): From 10px at 1024px viewport width to 12px at 1100px viewport width
+         -->
         <div
           use:initAnimation
-          class="flex flex-1 items-center justify-center rounded-md text-xs font-bold text-gray-950"
+          class="flex min-w-0 flex-1 items-center justify-center rounded-sm text-[clamp(6px,2.784px+0.87vw,8px)] font-bold text-gray-950 lg:rounded-md lg:text-[clamp(10px,-16.944px+2.632vw,12px)]"
           style:background-color={binColors[binIndex]}
         >
           {payout}{payout < 100 ? '×' : ''}

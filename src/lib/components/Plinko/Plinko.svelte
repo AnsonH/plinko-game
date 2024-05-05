@@ -4,6 +4,8 @@
   import BinsRow from './BinsRow.svelte';
   import PlinkoEngine from './PlinkoEngine';
 
+  const { WIDTH, HEIGHT } = PlinkoEngine;
+
   const initPlinko: Action<HTMLCanvasElement> = (node) => {
     $plinkoEngine = new PlinkoEngine(node);
     $plinkoEngine.start();
@@ -16,11 +18,9 @@
   };
 </script>
 
-<div class="mx-auto h-full" style:max-width={`${PlinkoEngine.WIDTH}px`}>
-  <div class="flex flex-col">
-    <div class="w-fit">
-      <canvas use:initPlinko width={PlinkoEngine.WIDTH} height={PlinkoEngine.HEIGHT} />
-    </div>
+<div class="mx-auto flex h-full flex-col px-4 pb-4" style:max-width={`${WIDTH}px`}>
+  <div class="relative w-full" style:aspect-ratio={`${WIDTH} / ${HEIGHT}`}>
+    <canvas use:initPlinko width={WIDTH} height={HEIGHT} class="absolute inset-0 h-full w-full" />
   </div>
   <BinsRow />
 </div>

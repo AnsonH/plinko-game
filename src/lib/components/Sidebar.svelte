@@ -10,7 +10,7 @@
   ];
 </script>
 
-<div class="flex min-w-[300px] flex-col gap-4 bg-gray-700 p-3">
+<div class="flex flex-col gap-4 bg-gray-700 p-3 lg:min-w-[300px]">
   <div>
     <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
     <select
@@ -36,7 +36,7 @@
     </select>
   </div>
   <button
-    class="rounded-md bg-green-500 py-3 font-semibold text-gray-900 transition-colors hover:bg-green-400 active:bg-green-600"
+    class="touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-gray-900 transition-colors hover:bg-green-400 active:bg-green-600"
     on:click={() => $plinkoEngine?.dropBall()}
   >
     Drop ball

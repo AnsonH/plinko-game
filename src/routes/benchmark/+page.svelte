@@ -27,7 +27,7 @@
   }
 </script>
 
-<div class="w-fit bg-gray-900">
+<div class="h-[570px] w-[760px] bg-gray-900">
   <Plinko />
 </div>
 <div class="mx-4 my-8 flex items-center gap-16">
