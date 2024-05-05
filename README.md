@@ -10,6 +10,9 @@ TODO
 
 ## Getting Started
 
+> [!NOTE]
+> Requires Node.js 20 or later.
+
 1. Install [pnpm](https://pnpm.io/installation)
 2. Clone this repository
 3. Install dependencies: `pnpm install`

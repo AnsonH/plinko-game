@@ -12,6 +12,9 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write ."
   },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "chart.js": "^4.4.2",
     "matter-js": "^0.19.0"

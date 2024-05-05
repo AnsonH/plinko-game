@@ -36,8 +36,8 @@ export const binColors = derived<typeof rowCount, { background: string[]; shadow
     ).map(({ r, g, b }) => `rgb(${r}, ${g}, ${b})`);
 
     return {
-      background: [...redToYellowBg, ...redToYellowBg.reverse().slice(isBinsEven ? 0 : 1)],
-      shadow: [...redToYellowShadow, ...redToYellowShadow.reverse().slice(isBinsEven ? 0 : 1)],
+      background: [...redToYellowBg, ...redToYellowBg.toReversed().slice(isBinsEven ? 0 : 1)],
+      shadow: [...redToYellowShadow, ...redToYellowShadow.toReversed().slice(isBinsEven ? 0 : 1)],
     };
   },
 );
