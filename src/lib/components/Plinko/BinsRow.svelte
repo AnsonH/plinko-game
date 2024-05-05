@@ -35,12 +35,13 @@
     binAnimations.push(bounceAnimation);
   };
 
-  // FIXME: On Safari, animation only plays once
   function playAnimation(binIndex: number) {
     const animation = binAnimations[binIndex];
-    if (animation.playState === 'running') {
-      animation.cancel();
-    }
+
+    // Always reset animation before playing. Safari has a weird behavior where
+    // the animation will not play the second time if it's not cancelled.
+    animation.cancel();
+
     animation.play();
   }
 
