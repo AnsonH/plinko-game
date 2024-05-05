@@ -1,5 +1,6 @@
-import { rowCount, winRecords } from '$lib/stores/game';
-import type { RowCount } from '$lib/types';
+import { binPayouts } from '$lib/constants/game';
+import { rowCount, winRecords, riskLevel } from '$lib/stores/game';
+import type { RiskLevel, RowCount } from '$lib/types';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter, { type IBodyDefinition } from 'matter-js';
 import { get } from 'svelte/store';
@@ -21,15 +22,15 @@ class PlinkoEngine {
   private canvas: HTMLCanvasElement;
 
   /**
-   * A cache value of the {@link rowCount} store for faster access. It's updated
+   * A cache value of the {@link rowCount} store for faster access, which updates
    * when the store value changes.
    */
   private rowCount: RowCount;
   /**
-   * The x-coordinates of every pin's center in the last row. Useful for calculating
-   * which bin a ball falls into.
+   * A cache value of the {@link riskLevel} store for faster access, which updates
+   * when the store value changes.
    */
-  private pinsLastRowXCoords: number[] = [];
+  private riskLevel: RiskLevel;
 
   private engine: Matter.Engine;
   private render: Matter.Render;
@@ -47,6 +48,12 @@ class PlinkoEngine {
    * a ball arrives at the bottom and enters a bin.
    */
   private sensor: Matter.Body;
+
+  /**
+   * The x-coordinates of every pin's center in the last row. Useful for calculating
+   * which bin a ball falls into.
+   */
+  private pinsLastRowXCoords: number[] = [];
 
   static WIDTH = 760;
   static HEIGHT = 570;
@@ -93,6 +100,8 @@ class PlinkoEngine {
 
     this.rowCount = get(rowCount);
     rowCount.subscribe((newRowCount) => this.updateRowCount(newRowCount));
+    this.riskLevel = get(riskLevel);
+    riskLevel.subscribe((newRiskLevel) => (this.riskLevel = newRiskLevel));
 
     this.engine = Matter.Engine.create({
       timing: {
@@ -130,9 +139,9 @@ class PlinkoEngine {
     Matter.Events.on(this.engine, 'collisionStart', ({ pairs }) => {
       pairs.forEach(({ bodyA, bodyB }) => {
         if (bodyA === this.sensor) {
-          this.handleSensorCollision(bodyB);
+          this.handleBallEnterBin(bodyB);
         } else if (bodyB === this.sensor) {
-          this.handleSensorCollision(bodyA);
+          this.handleBallEnterBin(bodyA);
         }
       });
     });
@@ -224,10 +233,18 @@ class PlinkoEngine {
   /**
    * Called when a ball hits the invisible sensor at the bottom.
    */
-  private handleSensorCollision(ball: Matter.Body) {
-    const binNumber = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
-    if (binNumber !== -1 && binNumber < this.pinsLastRowXCoords.length - 1) {
-      winRecords.update((records) => [...records, { binIndex: binNumber }]);
+  private handleBallEnterBin(ball: Matter.Body) {
+    const binIndex = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
+    if (binIndex !== -1 && binIndex < this.pinsLastRowXCoords.length - 1) {
+      winRecords.update((records) => [
+        ...records,
+        {
+          binIndex,
+          payout: {
+            multiplier: binPayouts[this.rowCount][this.riskLevel][binIndex],
+          },
+        },
+      ]);
     }
 
     Matter.Composite.remove(this.engine.world, ball);
