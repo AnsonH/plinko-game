@@ -11,6 +11,10 @@ export enum RiskLevel {
 
 export type WinRecord = {
   /**
+   * UUID of the win record.
+   */
+  id: string;
+  /**
    * Zero-based index of which bin the ball fell into (leftmost bin is 0).
    */
   binIndex: number;

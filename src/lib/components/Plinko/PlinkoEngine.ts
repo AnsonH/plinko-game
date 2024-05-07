@@ -239,6 +239,7 @@ class PlinkoEngine {
       winRecords.update((records) => [
         ...records,
         {
+          id: crypto.randomUUID(),
           binIndex,
           payout: {
             multiplier: binPayouts[this.rowCount][this.riskLevel][binIndex],
