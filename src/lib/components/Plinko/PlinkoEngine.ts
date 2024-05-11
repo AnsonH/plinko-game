@@ -4,6 +4,7 @@ import type { RiskLevel, RowCount } from '$lib/types';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter, { type IBodyDefinition } from 'matter-js';
 import { get } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 
 type BallFrictionsByRowCount = {
   friction: NonNullable<IBodyDefinition['friction']>;
@@ -239,7 +240,7 @@ class PlinkoEngine {
       winRecords.update((records) => [
         ...records,
         {
-          id: crypto.randomUUID(),
+          id: uuidv4(),
           binIndex,
           payout: {
             multiplier: binPayouts[this.rowCount][this.riskLevel][binIndex],
