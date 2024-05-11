@@ -1,5 +1,12 @@
 import { binPayouts } from '$lib/constants/game';
-import { rowCount, winRecords, riskLevel, betAmount, balance } from '$lib/stores/game';
+import {
+  rowCount,
+  winRecords,
+  riskLevel,
+  betAmount,
+  balance,
+  betAmountOfExistingBalls,
+} from '$lib/stores/game';
 import type { RiskLevel, RowCount } from '$lib/types';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter, { type IBodyDefinition } from 'matter-js';
@@ -38,11 +45,6 @@ class PlinkoEngine {
   private engine: Matter.Engine;
   private render: Matter.Render;
   private runner: Matter.Runner;
-
-  /**
-   * Stores the bet amount of every existing ball.
-   */
-  private ballBetAmountMap = new Map<Matter.Body['id'], number>();
 
   /**
    * Every pin of the game.
@@ -206,7 +208,7 @@ class PlinkoEngine {
     );
     Matter.Composite.add(this.engine.world, ball);
 
-    this.ballBetAmountMap.set(ball.id, this.betAmount);
+    betAmountOfExistingBalls.update((value) => ({ ...value, [ball.id]: this.betAmount }));
     balance.update((balance) => balance - this.betAmount);
   }
 
@@ -252,7 +254,7 @@ class PlinkoEngine {
   private handleBallEnterBin(ball: Matter.Body) {
     const binIndex = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
     if (binIndex !== -1 && binIndex < this.pinsLastRowXCoords.length - 1) {
-      const betAmount = this.ballBetAmountMap.get(ball.id) ?? 0;
+      const betAmount = get(betAmountOfExistingBalls)[ball.id] ?? 0;
       const multiplier = binPayouts[this.rowCount][this.riskLevel][binIndex];
       const payoutValue = betAmount * multiplier;
 
@@ -273,7 +275,11 @@ class PlinkoEngine {
     }
 
     Matter.Composite.remove(this.engine.world, ball);
-    this.ballBetAmountMap.delete(ball.id);
+    betAmountOfExistingBalls.update((value) => {
+      const newValue = { ...value };
+      delete newValue[ball.id];
+      return newValue;
+    });
   }
 
   /**
@@ -363,7 +369,7 @@ class PlinkoEngine {
         Matter.Composite.remove(this.engine.world, body);
       }
     });
-    this.ballBetAmountMap.clear();
+    betAmountOfExistingBalls.set({});
   }
 }
 

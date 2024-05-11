@@ -1,6 +1,11 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
 import { binColor } from '$lib/constants/game';
-import { RiskLevel, type RowCount, type WinRecord } from '$lib/types';
+import {
+  RiskLevel,
+  type BetAmountOfExistingBalls,
+  type RowCount,
+  type WinRecord,
+} from '$lib/types';
 import { interpolateRgbColors } from '$lib/utils/colors';
 import { countValueOccurrences } from '$lib/utils/numbers';
 import { persisted } from 'svelte-persisted-store';
@@ -13,6 +18,8 @@ const LOCAL_STORAGE_KEY = {
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
 
 export const betAmount = writable<number>(1);
+
+export const betAmountOfExistingBalls = writable<BetAmountOfExistingBalls>({});
 
 export const rowCount = writable<RowCount>(16);
 

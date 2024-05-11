@@ -9,6 +9,16 @@ export enum RiskLevel {
   HIGH = 'HIGH',
 }
 
+/**
+ * A record of the bet amount associated to every existing ball in the game
+ * that is still in motion.
+ *
+ * When a ball enters a bin, its record is removed.
+ */
+export type BetAmountOfExistingBalls = {
+  [ballId: number]: number;
+};
+
 export type WinRecord = {
   /**
    * UUID of the win record.
