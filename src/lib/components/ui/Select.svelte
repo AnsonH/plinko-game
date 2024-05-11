@@ -14,7 +14,8 @@
 <div class="relative">
   <select
     bind:value
-    class="block w-full appearance-none rounded-md border-2 border-gray-600 bg-gray-900 py-2 pl-3 pr-8 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
+    class="block w-full appearance-none rounded-md border-2 border-gray-600 bg-gray-900 py-2 pl-3 pr-8 text-sm text-white transition hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none disabled:cursor-not-allowed"
+    {...$$restProps}
   >
     {#each items as { value, label }}
       <option {value}>{label}</option>

@@ -1,13 +1,22 @@
 <script lang="ts">
   import { Select } from '$lib/components/ui';
   import { rowCountOptions } from '$lib/constants/game';
-  import { balance, betAmount, plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
+  import {
+    balance,
+    betAmount,
+    betAmountOfExistingBalls,
+    plinkoEngine,
+    riskLevel,
+    rowCount,
+  } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';
   import { twMerge } from 'tailwind-merge';
 
   $: isBetAmountNegative = $betAmount < 0;
   $: isBetExceedBalance = $betAmount > $balance;
   $: hasError = isBetAmountNegative || isBetExceedBalance;
+
+  $: hasOutstandingBalls = Object.keys($betAmountOfExistingBalls).length > 0;
 
   const riskLevels = [
     { value: RiskLevel.LOW, label: 'Low' },
@@ -63,11 +72,16 @@
   </div>
   <div>
     <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
-    <Select id="riskLevel" bind:value={$riskLevel} items={riskLevels} />
+    <Select
+      id="riskLevel"
+      bind:value={$riskLevel}
+      items={riskLevels}
+      disabled={hasOutstandingBalls}
+    />
   </div>
   <div>
     <label for="rowCount" class="text-sm font-medium text-gray-300">Rows</label>
-    <Select id="rowCount" bind:value={$rowCount} items={rowCounts} />
+    <Select id="rowCount" bind:value={$rowCount} items={rowCounts} disabled={hasOutstandingBalls} />
   </div>
   <button
     on:click={() => $plinkoEngine?.dropBall()}
