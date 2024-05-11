@@ -7,6 +7,8 @@ import { derived, writable } from 'svelte/store';
 
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
 
+export const betAmount = writable<number>(0);
+
 export const rowCount = writable<RowCount>(16);
 
 export const riskLevel = writable<RiskLevel>(RiskLevel.MEDIUM);

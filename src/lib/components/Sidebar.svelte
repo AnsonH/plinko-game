@@ -1,6 +1,6 @@
 <script lang="ts">
   import { rowCountOptions } from '$lib/constants/game';
-  import { plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
+  import { betAmount, plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';
 
   const riskLevels = [
@@ -12,11 +12,46 @@
 
 <div class="flex flex-col gap-4 bg-gray-700 p-3 lg:min-w-[300px]">
   <div>
+    <label for="betAmount" class="text-sm font-medium text-gray-300">Bet Amount</label>
+    <div class="flex">
+      <!-- TODO: Disallow drop ball if betAmount > balance -->
+      <!-- TODO: Warn if number is < 0 -->
+      <div class="relative flex-1">
+        <input
+          id="betAmount"
+          bind:value={$betAmount}
+          type="number"
+          min="0"
+          step="0.01"
+          inputmode="decimal"
+          class="w-full rounded-l-md border-2 border-gray-600 bg-gray-900 py-2 pl-7 pr-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
+        />
+        <div class="absolute left-3 top-2 select-none text-gray-500" aria-hidden>$</div>
+      </div>
+      <button
+        on:click={() => {
+          $betAmount = parseFloat(($betAmount / 2).toFixed(2));
+        }}
+        class="touch-manipulation bg-gray-600 px-4 font-bold diagonal-fractions text-white transition-colors hover:bg-gray-500 active:bg-gray-400"
+      >
+        1/2
+      </button>
+      <button
+        on:click={() => {
+          $betAmount = parseFloat(($betAmount * 2).toFixed(2));
+        }}
+        class="relative touch-manipulation rounded-r-md bg-gray-600 px-4 text-sm font-bold text-white transition-colors after:absolute after:left-0 after:inline-block after:h-1/2 after:w-[2px] after:bg-gray-800 after:content-[''] hover:bg-gray-500 active:bg-gray-400"
+      >
+        2×
+      </button>
+    </div>
+  </div>
+  <div>
     <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
     <select
       id="riskLevel"
       bind:value={$riskLevel}
-      class="block w-full rounded-md border-2 border-gray-600 bg-gray-900 p-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500"
+      class="block w-full appearance-none rounded-md border-2 border-gray-600 bg-gray-900 px-3 py-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
     >
       {#each riskLevels as { value, label }}
         <option {value}>{label}</option>
@@ -28,7 +63,7 @@
     <select
       id="rowCount"
       bind:value={$rowCount}
-      class="block w-full rounded-md border-2 border-gray-600 bg-gray-900 p-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500"
+      class="block w-full appearance-none rounded-md border-2 border-gray-600 bg-gray-900 px-3 py-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
     >
       {#each rowCountOptions as rows}
         <option value={rows}>{rows}</option>
