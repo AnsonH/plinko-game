@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   computeBinProbabilities,
+  convertScale,
   countValueOccurrences,
   dotProduct,
   factorial,
@@ -57,5 +58,13 @@ describe('getRandomBetween', () => {
   it('returns a number between the given range', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0.25);
     expect(getRandomBetween(100, 200)).toBe(125);
+  });
+});
+
+describe('convertScale', () => {
+  it('converts a value from one scale to another', () => {
+    expect(convertScale(0.5, [0, 1], [0, 100])).toBe(50);
+    expect(convertScale(0.75, [0, 1], [100, 200])).toBe(175);
+    expect(convertScale(150, [100, 200], [0, 1])).toBe(0.5);
   });
 });

@@ -26,6 +26,26 @@ export function computeBinProbabilities(rowCount: RowCount): number[] {
 }
 
 /**
+ * Converts `valueA` from `scaleA` to `scaleB`.
+ *
+ * @example
+ * convertScale(0.25, [0, 1], [0, 100]); // 25
+ */
+export function convertScale(
+  valueA: number,
+  scaleA: [number, number],
+  scaleB: [number, number],
+): number {
+  const [minA, maxA] = scaleA;
+  const [minB, maxB] = scaleB;
+
+  const percentage = (valueA - minA) / (maxA - minA);
+  const valueB = percentage * (maxB - minB) + minB;
+
+  return valueB;
+}
+
+/**
  * Counts how many times each value occurs in the given array.
  */
 export function countValueOccurrences<T extends string | number>(values: T[]): Record<T, number> {
