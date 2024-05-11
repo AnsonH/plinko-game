@@ -3,17 +3,24 @@ import { binColor } from '$lib/constants/game';
 import { RiskLevel, type RowCount, type WinRecord } from '$lib/types';
 import { interpolateRgbColors } from '$lib/utils/colors';
 import { countValueOccurrences } from '$lib/utils/numbers';
+import { persisted } from 'svelte-persisted-store';
 import { derived, writable } from 'svelte/store';
+
+const LOCAL_STORAGE_KEY = {
+  BALANCE: 'plinko_balance',
+} as const;
 
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
 
-export const betAmount = writable<number>(0);
+export const betAmount = writable<number>(1);
 
 export const rowCount = writable<RowCount>(16);
 
 export const riskLevel = writable<RiskLevel>(RiskLevel.MEDIUM);
 
 export const winRecords = writable<WinRecord[]>([]);
+
+export const balance = persisted<number>(LOCAL_STORAGE_KEY.BALANCE, 200);
 
 /**
  * RGB colors for every bin. The length of the array is the number of bins.

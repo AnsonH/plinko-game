@@ -1,5 +1,6 @@
 <script lang="ts">
   import logo from '$lib/assets/logo.svg';
+  import Balance from '$lib/components/Balance.svelte';
   import Plinko from '$lib/components/Plinko';
   import Sidebar from '$lib/components/Sidebar.svelte';
 </script>
@@ -7,7 +8,10 @@
 <div class="min-h-dvh w-full">
   <nav class="sticky top-0 z-10 w-full bg-gray-700 px-5 drop-shadow-lg">
     <div class="mx-auto flex h-14 max-w-7xl items-center justify-between">
-      <img src={logo} alt="logo" class="h-7" />
+      <img src={logo} alt="logo" class="h-6 sm:h-7" />
+      <div class="mx-auto">
+        <Balance />
+      </div>
     </div>
   </nav>
   <div class="px-5">
