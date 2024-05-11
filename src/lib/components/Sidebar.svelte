@@ -15,8 +15,8 @@
   ];
 </script>
 
-<div class="flex flex-col gap-4 bg-gray-700 p-3 lg:min-w-[300px]">
-  <div>
+<div class="flex flex-col gap-5 bg-gray-700 p-3 lg:min-w-[300px]">
+  <div class="relative">
     <label for="betAmount" class="text-sm font-medium text-gray-300">Bet Amount</label>
     <div class="flex">
       <div class="relative flex-1">
@@ -51,6 +51,13 @@
         2×
       </button>
     </div>
+    {#if isBetAmountNegative}
+      <p class="absolute text-xs leading-5 text-red-400">
+        This must be greater than or equal to 0.
+      </p>
+    {:else if isBetExceedBalance}
+      <p class="absolute text-xs leading-5 text-red-400">Can't bet more than your balance!</p>
+    {/if}
   </div>
   <div>
     <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
