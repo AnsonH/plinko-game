@@ -1,7 +1,12 @@
 <script lang="ts">
   import { rowCountOptions } from '$lib/constants/game';
-  import { betAmount, plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
+  import { balance, betAmount, plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';
+  import { twMerge } from 'tailwind-merge';
+
+  $: isBetAmountNegative = $betAmount < 0;
+  $: isBetExceedBalance = $betAmount > $balance;
+  $: hasError = isBetAmountNegative || isBetExceedBalance;
 
   const riskLevels = [
     { value: RiskLevel.LOW, label: 'Low' },
@@ -14,8 +19,6 @@
   <div>
     <label for="betAmount" class="text-sm font-medium text-gray-300">Bet Amount</label>
     <div class="flex">
-      <!-- TODO: Disallow drop ball if betAmount > balance -->
-      <!-- TODO: Warn if number is < 0 -->
       <div class="relative flex-1">
         <input
           id="betAmount"
@@ -24,7 +27,10 @@
           min="0"
           step="0.01"
           inputmode="decimal"
-          class="w-full rounded-l-md border-2 border-gray-600 bg-gray-900 py-2 pl-7 pr-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
+          class={twMerge(
+            'w-full rounded-l-md border-2 border-gray-600 bg-gray-900 py-2 pl-7 pr-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none',
+            hasError && 'border-red-500 hover:border-red-400 focus:border-red-400',
+          )}
         />
         <div class="absolute left-3 top-2 select-none text-gray-500" aria-hidden>$</div>
       </div>
@@ -71,8 +77,9 @@
     </select>
   </div>
   <button
-    class="touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-gray-900 transition-colors hover:bg-green-400 active:bg-green-600"
     on:click={() => $plinkoEngine?.dropBall()}
+    disabled={hasError}
+    class="touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-gray-900 transition-colors hover:bg-green-400 active:bg-green-600 disabled:bg-neutral-600 disabled:text-neutral-400"
   >
     Drop ball
   </button>
