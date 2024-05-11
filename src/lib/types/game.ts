@@ -15,6 +15,10 @@ export type WinRecord = {
    */
   id: string;
   /**
+   * How much the player has bet.
+   */
+  betAmount: number;
+  /**
    * Zero-based index of which bin the ball fell into (leftmost bin is 0).
    */
   binIndex: number;
@@ -23,5 +27,9 @@ export type WinRecord = {
      * Multiplier for the payout (e.g. `0.3`, `1.5`).
      */
     multiplier: number;
+    /**
+     * Actual payout amount.
+     */
+    value: number;
   };
 };

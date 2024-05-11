@@ -1,5 +1,5 @@
 import { binPayouts } from '$lib/constants/game';
-import { rowCount, winRecords, riskLevel } from '$lib/stores/game';
+import { rowCount, winRecords, riskLevel, betAmount, balance } from '$lib/stores/game';
 import type { RiskLevel, RowCount } from '$lib/types';
 import { getRandomBetween } from '$lib/utils/numbers';
 import Matter, { type IBodyDefinition } from 'matter-js';
@@ -23,13 +23,15 @@ class PlinkoEngine {
   private canvas: HTMLCanvasElement;
 
   /**
-   * A cache value of the {@link rowCount} store for faster access, which updates
-   * when the store value changes.
+   * A cache value of the {@link betAmount} store for faster access.
+   */
+  private betAmount: number;
+  /**
+   * A cache value of the {@link rowCount} store for faster access.
    */
   private rowCount: RowCount;
   /**
-   * A cache value of the {@link riskLevel} store for faster access, which updates
-   * when the store value changes.
+   * A cache value of the {@link riskLevel} store for faster access.
    */
   private riskLevel: RiskLevel;
 
@@ -37,6 +39,14 @@ class PlinkoEngine {
   private render: Matter.Render;
   private runner: Matter.Runner;
 
+  /**
+   * Stores the bet amount of every existing ball.
+   */
+  private ballBetAmountMap = new Map<Matter.Body['id'], number>();
+
+  /**
+   * Every pin of the game.
+   */
   private pins: Matter.Body[] = [];
   /**
    * Walls are invisible, slanted "guard rails" at the left and right sides of the
@@ -99,10 +109,12 @@ class PlinkoEngine {
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
 
+    this.betAmount = get(betAmount);
     this.rowCount = get(rowCount);
-    rowCount.subscribe((newRowCount) => this.updateRowCount(newRowCount));
     this.riskLevel = get(riskLevel);
-    riskLevel.subscribe((newRiskLevel) => (this.riskLevel = newRiskLevel));
+    betAmount.subscribe((value) => (this.betAmount = value));
+    rowCount.subscribe((value) => this.updateRowCount(value));
+    riskLevel.subscribe((value) => (this.riskLevel = value));
 
     this.engine = Matter.Engine.create({
       timing: {
@@ -193,6 +205,9 @@ class PlinkoEngine {
       },
     );
     Matter.Composite.add(this.engine.world, ball);
+
+    this.ballBetAmountMap.set(ball.id, this.betAmount);
+    balance.update((balance) => balance - this.betAmount);
   }
 
   /**
@@ -237,19 +252,28 @@ class PlinkoEngine {
   private handleBallEnterBin(ball: Matter.Body) {
     const binIndex = this.pinsLastRowXCoords.findLastIndex((pinX) => pinX < ball.position.x);
     if (binIndex !== -1 && binIndex < this.pinsLastRowXCoords.length - 1) {
+      const betAmount = this.ballBetAmountMap.get(ball.id) ?? 0;
+      const multiplier = binPayouts[this.rowCount][this.riskLevel][binIndex];
+      const payoutValue = betAmount * multiplier;
+
       winRecords.update((records) => [
         ...records,
         {
           id: uuidv4(),
+          betAmount,
           binIndex,
           payout: {
-            multiplier: binPayouts[this.rowCount][this.riskLevel][binIndex],
+            multiplier,
+            value: payoutValue,
           },
         },
       ]);
+
+      balance.update((balance) => balance + payoutValue);
     }
 
     Matter.Composite.remove(this.engine.world, ball);
+    this.ballBetAmountMap.delete(ball.id);
   }
 
   /**
@@ -339,6 +363,7 @@ class PlinkoEngine {
         Matter.Composite.remove(this.engine.world, body);
       }
     });
+    this.ballBetAmountMap.clear();
   }
 }
 
