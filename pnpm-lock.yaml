@@ -64,6 +64,9 @@ devDependencies:
   eslint-plugin-tailwindcss:
     specifier: ^3.15.1
     version: 3.15.1(tailwindcss@3.4.3)
+  phosphor-svelte:
+    specifier: ^2.0.1
+    version: 2.0.1(svelte@4.2.15)
   postcss:
     specifier: ^8.4.38
     version: 8.4.38
@@ -2167,6 +2170,14 @@ packages:
       '@types/estree': 1.0.5
       estree-walker: 3.0.3
       is-reference: 3.0.2
+
+  /phosphor-svelte@2.0.1(svelte@4.2.15):
+    resolution: {integrity: sha512-2Ryvaf1sfCNOF0zTQVghtxOs/6JKn9MV+e9uluNAT9wAosgNYnaBD210WcFGRrva1sF8cddv7EWSS//ITNN4mg==}
+    peerDependencies:
+      svelte: '>=3'
+    dependencies:
+      svelte: 4.2.15
+    dev: true
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}

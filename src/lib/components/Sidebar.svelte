@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Select } from '$lib/components/ui';
   import { rowCountOptions } from '$lib/constants/game';
   import { balance, betAmount, plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';
@@ -13,6 +14,7 @@
     { value: RiskLevel.MEDIUM, label: 'Medium' },
     { value: RiskLevel.HIGH, label: 'High' },
   ];
+  const rowCounts = rowCountOptions.map((value) => ({ value, label: value.toString() }));
 </script>
 
 <div class="flex flex-col gap-5 bg-gray-700 p-3 lg:min-w-[300px]">
@@ -61,27 +63,11 @@
   </div>
   <div>
     <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
-    <select
-      id="riskLevel"
-      bind:value={$riskLevel}
-      class="block w-full appearance-none rounded-md border-2 border-gray-600 bg-gray-900 px-3 py-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
-    >
-      {#each riskLevels as { value, label }}
-        <option {value}>{label}</option>
-      {/each}
-    </select>
+    <Select id="riskLevel" bind:value={$riskLevel} items={riskLevels} />
   </div>
   <div>
     <label for="rowCount" class="text-sm font-medium text-gray-300">Rows</label>
-    <select
-      id="rowCount"
-      bind:value={$rowCount}
-      class="block w-full appearance-none rounded-md border-2 border-gray-600 bg-gray-900 px-3 py-2 text-sm text-white transition-colors hover:cursor-pointer hover:border-gray-500 focus:border-gray-500 focus:outline-none"
-    >
-      {#each rowCountOptions as rows}
-        <option value={rows}>{rows}</option>
-      {/each}
-    </select>
+    <Select id="rowCount" bind:value={$rowCount} items={rowCounts} />
   </div>
   <button
     on:click={() => $plinkoEngine?.dropBall()}
