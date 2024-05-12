@@ -1,5 +1,10 @@
 export type { RowCount } from '$lib/constants/game';
 
+export enum BetMode {
+  MANUAL = 'MANUAL',
+  AUTO = 'AUTO',
+}
+
 /**
  * Game's risk level, which controls the volatility of payout.
  */

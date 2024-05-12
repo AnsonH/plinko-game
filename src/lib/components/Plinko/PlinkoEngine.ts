@@ -179,7 +179,7 @@ class PlinkoEngine {
   }
 
   /**
-   * Drops a new ball from the top with a random horizontal offset.
+   * Drops a new ball from the top with a random horizontal offset, and deducts the balance.
    */
   dropBall() {
     const ballOffsetRangeX = this.pinDistanceX * 0.8;
