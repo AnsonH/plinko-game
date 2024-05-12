@@ -2,7 +2,7 @@
   import logo from '$lib/assets/logo.svg';
   import Balance from '$lib/components/Balance.svelte';
   import Plinko from '$lib/components/Plinko';
-  import Sidebar from '$lib/components/Sidebar.svelte';
+  import Sidebar from '$lib/components/Sidebar';
   import GitHubLogo from 'phosphor-svelte/lib/GithubLogo';
 </script>
 
