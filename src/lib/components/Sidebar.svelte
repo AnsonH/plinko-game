@@ -41,6 +41,16 @@
 
   $: hasOutstandingBalls = Object.keys($betAmountOfExistingBalls).length > 0;
 
+  const handleBetAmountFocusOut: FormEventHandler<HTMLInputElement> = (e) => {
+    const parsedValue = parseFloat(e.currentTarget.value.trim());
+    if (isNaN(parsedValue)) {
+      $betAmount = -1; // If input field is empty, this forces re-render so its value resets to 0
+      $betAmount = 0;
+    } else {
+      $betAmount = parsedValue;
+    }
+  };
+
   function resetAutoBetInterval() {
     if (autoBetInterval !== null) {
       clearInterval(autoBetInterval);
@@ -124,10 +134,10 @@
     <label for="betAmount" class="text-sm font-medium text-gray-300">Bet Amount</label>
     <div class="flex">
       <div class="relative flex-1">
-        <!-- FIXME: Default to zero if it's empty -->
         <input
           id="betAmount"
-          bind:value={$betAmount}
+          value={$betAmount}
+          on:focusout={handleBetAmountFocusOut}
           disabled={autoBetInterval !== null}
           type="number"
           min="0"
@@ -136,7 +146,7 @@
           class={twMerge(
             'w-full rounded-l-md border-2 border-gray-600 bg-gray-900 py-2 pl-7 pr-2 text-sm text-white transition-colors hover:cursor-pointer focus:border-gray-500 focus:outline-none disabled:cursor-not-allowed  disabled:opacity-50 hover:[&:not(:disabled)]:border-gray-500',
             (isBetAmountNegative || isBetExceedBalance) &&
-              'border-red-500 hover:border-red-400 focus:border-red-400',
+              'border-red-500 focus:border-red-400 hover:[&:not(:disabled)]:border-red-400',
           )}
         />
         <div class="absolute left-3 top-2 select-none text-gray-500" aria-hidden>$</div>
