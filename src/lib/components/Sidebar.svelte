@@ -10,9 +10,12 @@
     rowCount,
   } from '$lib/stores/game';
   import { BetMode, RiskLevel } from '$lib/types';
+  import { flyAndScale } from '$lib/utils/transitions';
+  import { Popover } from 'bits-ui';
+  import Infinity from 'phosphor-svelte/lib/Infinity';
+  import Question from 'phosphor-svelte/lib/Question';
   import type { FormEventHandler } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
-  import Infinity from 'phosphor-svelte/lib/Infinity';
 
   let betMode: BetMode = BetMode.MANUAL;
 
@@ -188,7 +191,21 @@
 
   {#if betMode === BetMode.AUTO}
     <div>
-      <label for="autoBetInput" class="text-sm font-medium text-gray-300">Number of Bets</label>
+      <div class="flex items-center gap-1">
+        <label for="autoBetInput" class="text-sm font-medium text-gray-300">Number of Bets</label>
+        <Popover.Root>
+          <Popover.Trigger class="p-1">
+            <Question class="text-gray-300" weight="bold" />
+          </Popover.Trigger>
+          <Popover.Content
+            transition={flyAndScale}
+            class="z-30 max-w-lg space-y-2 rounded-md bg-slate-600 p-3 drop-shadow-xl"
+          >
+            <p class="text-xs font-medium text-white">Enter '0' for unlimited bets.</p>
+            <Popover.Arrow />
+          </Popover.Content>
+        </Popover.Root>
+      </div>
       <div class="relative">
         <input
           id="autoBetInput"
