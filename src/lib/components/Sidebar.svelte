@@ -114,7 +114,7 @@
   const rowCounts = rowCountOptions.map((value) => ({ value, label: value.toString() }));
 </script>
 
-<div class="flex flex-col gap-5 bg-gray-700 p-3 lg:min-w-[300px]">
+<div class="flex flex-col gap-5 bg-slate-700 p-3 lg:min-w-[300px]">
   <div class="flex gap-1 rounded-full bg-slate-900 p-1">
     {#each betModes as { value, label }}
       <button
@@ -131,7 +131,7 @@
   </div>
 
   <div class="relative">
-    <label for="betAmount" class="text-sm font-medium text-gray-300">Bet Amount</label>
+    <label for="betAmount" class="text-sm font-medium text-slate-300">Bet Amount</label>
     <div class="flex">
       <div class="relative flex-1">
         <input
@@ -144,19 +144,19 @@
           step="0.01"
           inputmode="decimal"
           class={twMerge(
-            'w-full rounded-l-md border-2 border-gray-600 bg-gray-900 py-2 pl-7 pr-2 text-sm text-white transition-colors hover:cursor-pointer focus:border-gray-500 focus:outline-none disabled:cursor-not-allowed  disabled:opacity-50 hover:[&:not(:disabled)]:border-gray-500',
+            'w-full rounded-l-md border-2 border-slate-600 bg-slate-900 py-2 pl-7 pr-2 text-sm text-white transition-colors hover:cursor-pointer focus:border-slate-500 focus:outline-none disabled:cursor-not-allowed  disabled:opacity-50 hover:[&:not(:disabled)]:border-slate-500',
             (isBetAmountNegative || isBetExceedBalance) &&
               'border-red-500 focus:border-red-400 hover:[&:not(:disabled)]:border-red-400',
           )}
         />
-        <div class="absolute left-3 top-2 select-none text-gray-500" aria-hidden>$</div>
+        <div class="absolute left-3 top-2 select-none text-slate-500" aria-hidden>$</div>
       </div>
       <button
         disabled={autoBetInterval !== null}
         on:click={() => {
           $betAmount = parseFloat(($betAmount / 2).toFixed(2));
         }}
-        class="touch-manipulation bg-gray-600 px-4 font-bold diagonal-fractions text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-gray-500 active:[&:not(:disabled)]:bg-gray-400"
+        class="touch-manipulation bg-slate-600 px-4 font-bold diagonal-fractions text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-slate-500 active:[&:not(:disabled)]:bg-slate-400"
       >
         1/2
       </button>
@@ -165,7 +165,7 @@
         on:click={() => {
           $betAmount = parseFloat(($betAmount * 2).toFixed(2));
         }}
-        class="relative touch-manipulation rounded-r-md bg-gray-600 px-4 text-sm font-bold text-white transition-colors after:absolute after:left-0 after:inline-block after:h-1/2 after:w-[2px] after:bg-gray-800 after:content-[''] disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-gray-500 active:[&:not(:disabled)]:bg-gray-400"
+        class="relative touch-manipulation rounded-r-md bg-slate-600 px-4 text-sm font-bold text-white transition-colors after:absolute after:left-0 after:inline-block after:h-1/2 after:w-[2px] after:bg-slate-800 after:content-[''] disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-slate-500 active:[&:not(:disabled)]:bg-slate-400"
       >
         2×
       </button>
@@ -180,7 +180,7 @@
   </div>
 
   <div>
-    <label for="riskLevel" class="text-sm font-medium text-gray-300">Risk</label>
+    <label for="riskLevel" class="text-sm font-medium text-slate-300">Risk</label>
     <Select
       id="riskLevel"
       bind:value={$riskLevel}
@@ -190,7 +190,7 @@
   </div>
 
   <div>
-    <label for="rowCount" class="text-sm font-medium text-gray-300">Rows</label>
+    <label for="rowCount" class="text-sm font-medium text-slate-300">Rows</label>
     <Select
       id="rowCount"
       bind:value={$rowCount}
@@ -202,10 +202,10 @@
   {#if betMode === BetMode.AUTO}
     <div>
       <div class="flex items-center gap-1">
-        <label for="autoBetInput" class="text-sm font-medium text-gray-300">Number of Bets</label>
+        <label for="autoBetInput" class="text-sm font-medium text-slate-300">Number of Bets</label>
         <Popover.Root>
           <Popover.Trigger class="p-1">
-            <Question class="text-gray-300" weight="bold" />
+            <Question class="text-slate-300" weight="bold" />
           </Popover.Trigger>
           <Popover.Content
             transition={flyAndScale}
@@ -226,7 +226,7 @@
           min="0"
           inputmode="numeric"
           class={twMerge(
-            'w-full rounded-md border-2 border-gray-600 bg-gray-900 py-2 pl-3 pr-8 text-sm text-white transition-colors hover:cursor-pointer focus:border-gray-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:border-gray-500',
+            'w-full rounded-md border-2 border-slate-600 bg-slate-900 py-2 pl-3 pr-8 text-sm text-white transition-colors hover:cursor-pointer focus:border-slate-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:border-slate-500',
             isAutoBetInputNegative && 'border-red-500 hover:border-red-400 focus:border-red-400',
           )}
         />
@@ -244,7 +244,7 @@
     on:click={handleBetClick}
     disabled={hasError}
     class={twMerge(
-      'touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-gray-900 transition-colors hover:bg-green-400 active:bg-green-600 disabled:bg-neutral-600 disabled:text-neutral-400',
+      'touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-slate-900 transition-colors hover:bg-green-400 active:bg-green-600 disabled:bg-neutral-600 disabled:text-neutral-400',
       autoBetInterval !== null && 'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600',
     )}
   >
