@@ -4,6 +4,7 @@
   import ChartLine from 'phosphor-svelte/lib/ChartLine';
   import Close from 'phosphor-svelte/lib/X';
   import { scale } from 'svelte/transition';
+  import Profit from './Profit.svelte';
 
   let dragHandleElement: HTMLDivElement;
 </script>
@@ -11,7 +12,7 @@
 <div
   in:scale={{ duration: 200 }}
   use:draggable={{ bounds: 'body', handle: dragHandleElement }}
-  class="fixed bottom-8 right-8 z-50 w-[18rem] overflow-hidden rounded-md bg-slate-600 drop-shadow-lg"
+  class="fixed bottom-8 right-8 z-50 w-[20rem] overflow-hidden rounded-md bg-slate-600 drop-shadow-lg"
 >
   <div class="flex">
     <div
@@ -29,6 +30,8 @@
     </button>
   </div>
   <div class="p-4">
-    <p class="text-white">TODO</p>
+    <div class="flex flex-col gap-4">
+      <Profit />
+    </div>
   </div>
 </div>

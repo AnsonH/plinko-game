@@ -268,6 +268,7 @@ class PlinkoEngine {
             multiplier,
             value: payoutValue,
           },
+          profit: payoutValue - betAmount,
         },
       ]);
 

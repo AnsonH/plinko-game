@@ -47,4 +47,8 @@ export type WinRecord = {
      */
     value: number;
   };
+  /**
+   * Payout value minus the bet amount.
+   */
+  profit: number;
 };
