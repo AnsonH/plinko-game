@@ -5,13 +5,15 @@
     balance,
     betAmount,
     betAmountOfExistingBalls,
+    isLiveStatsOpen,
     plinkoEngine,
     riskLevel,
     rowCount,
   } from '$lib/stores/game';
   import { BetMode, RiskLevel } from '$lib/types';
   import { flyAndScale } from '$lib/utils/transitions';
-  import { Popover } from 'bits-ui';
+  import { Popover, Tooltip } from 'bits-ui';
+  import ChartLine from 'phosphor-svelte/lib/ChartLine';
   import Infinity from 'phosphor-svelte/lib/Infinity';
   import Question from 'phosphor-svelte/lib/Question';
   import type { FormEventHandler } from 'svelte/elements';
@@ -209,9 +211,9 @@
           </Popover.Trigger>
           <Popover.Content
             transition={flyAndScale}
-            class="z-30 max-w-lg space-y-2 rounded-md bg-slate-600 p-3 drop-shadow-xl"
+            class="z-30 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
           >
-            <p class="text-xs font-medium text-white">Enter '0' for unlimited bets.</p>
+            <p>Enter '0' for unlimited bets.</p>
             <Popover.Arrow />
           </Popover.Content>
         </Popover.Root>
@@ -256,4 +258,33 @@
       Stop Autobet
     {/if}
   </button>
+
+  <div class="mt-auto pt-5">
+    <div class="flex items-center gap-2 border-t border-slate-600 pt-3">
+      <!-- Live Stats Button -->
+      <Tooltip.Root openDelay={0} closeOnPointerDown={false}>
+        <Tooltip.Trigger asChild let:builder>
+          <button
+            use:builder.action
+            {...builder}
+            on:click={() => ($isLiveStatsOpen = !$isLiveStatsOpen)}
+            class={twMerge(
+              'rounded-full p-2 text-slate-300 transition hover:bg-slate-600 active:bg-slate-500',
+              $isLiveStatsOpen && 'text-slate-100',
+            )}
+          >
+            <ChartLine class="size-6" weight="bold" />
+          </button>
+        </Tooltip.Trigger>
+        <Tooltip.Content
+          transition={flyAndScale}
+          sideOffset={4}
+          class="z-30 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
+        >
+          <Tooltip.Arrow />
+          <p>{$isLiveStatsOpen ? 'Close' : 'Open'} Live Stats</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+    </div>
+  </div>
 </div>

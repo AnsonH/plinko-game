@@ -16,6 +16,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@neodrag/svelte": "^2.0.6",
     "bits-ui": "^0.21.7",
     "chart.js": "^4.4.2",
     "matter-js": "^0.19.0",

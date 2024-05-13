@@ -1,12 +1,14 @@
 <script lang="ts">
   import logo from '$lib/assets/logo.svg';
   import Balance from '$lib/components/Balance.svelte';
+  import LiveStats from '$lib/components/LiveStats/LiveStats.svelte';
   import Plinko from '$lib/components/Plinko';
   import Sidebar from '$lib/components/Sidebar';
+  import { isLiveStatsOpen } from '$lib/stores/game';
   import GitHubLogo from 'phosphor-svelte/lib/GithubLogo';
 </script>
 
-<div class="flex min-h-dvh w-full flex-col">
+<div class="relative flex min-h-dvh w-full flex-col">
   <nav class="sticky top-0 z-10 w-full bg-gray-700 px-5 drop-shadow-lg">
     <div class="mx-auto flex h-14 max-w-7xl items-center justify-between">
       <img src={logo} alt="logo" class="h-6 sm:h-7" />
@@ -15,6 +17,7 @@
       </div>
     </div>
   </nav>
+
   <div class="flex-1 px-5">
     <div class="mx-auto mt-5 min-w-[300px] max-w-xl drop-shadow-xl md:mt-10 lg:max-w-7xl">
       <div class="flex flex-col-reverse overflow-hidden rounded-lg lg:w-full lg:flex-row">
@@ -25,6 +28,11 @@
       </div>
     </div>
   </div>
+
+  {#if $isLiveStatsOpen}
+    <LiveStats />
+  {/if}
+
   <footer class="px-5 pb-4 pt-16">
     <div class="mx-auto max-w-[40rem]">
       <div aria-hidden="true" class="h-[1px] bg-slate-700" />
