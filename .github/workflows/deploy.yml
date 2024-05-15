@@ -64,6 +64,12 @@ jobs:
         with:
           name: build
 
+      - name: List directory contents
+        run: ls -l build
+
+      - name: Current working directory
+        run: pwd
+
       - name: Deploy to Netlify
         id: netlify_deploy
         run: |
