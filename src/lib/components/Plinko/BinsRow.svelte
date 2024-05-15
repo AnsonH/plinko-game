@@ -1,6 +1,7 @@
 <script lang="ts">
   import { binPayouts } from '$lib/constants/game';
   import { binColors, plinkoEngine, riskLevel, rowCount, winRecords } from '$lib/stores/game';
+  import { isAnimationOn } from '$lib/stores/settings';
   import type { Action } from 'svelte/action';
 
   /**
@@ -32,6 +33,10 @@
   };
 
   function playAnimation(binIndex: number) {
+    if (!$isAnimationOn) {
+      return;
+    }
+
     const animation = binAnimations[binIndex];
 
     // Always reset animation before playing. Safari has a weird behavior where

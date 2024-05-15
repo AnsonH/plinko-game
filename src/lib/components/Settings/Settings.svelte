@@ -1,7 +1,9 @@
 <script lang="ts">
   import { isGameSettingsOpen } from '$lib/stores/layout';
+  import { isAnimationOn } from '$lib/stores/settings';
+  import { Label } from 'bits-ui';
   import GearSix from 'phosphor-svelte/lib/GearSix';
-  import { DraggableWindow } from '../ui';
+  import { DraggableWindow, Switch } from '../ui';
 </script>
 
 <DraggableWindow
@@ -13,5 +15,10 @@
     <p class="text-sm font-medium text-white">Game Settings</p>
   </svelte:fragment>
 
-  <div class="flex flex-col gap-4">TODO</div>
+  <div class="flex flex-col gap-4">
+    <div class="flex items-center gap-4">
+      <Switch id="isAnimationOn" bind:checked={$isAnimationOn} />
+      <Label.Root for="isAnimationOn" class="text-sm  text-white">Animations</Label.Root>
+    </div>
+  </div>
 </DraggableWindow>
