@@ -3,8 +3,9 @@
   import Balance from '$lib/components/Balance.svelte';
   import LiveStats from '$lib/components/LiveStats/LiveStats.svelte';
   import Plinko from '$lib/components/Plinko';
+  import Settings from '$lib/components/Settings';
   import Sidebar from '$lib/components/Sidebar';
-  import { isLiveStatsOpen } from '$lib/stores/layout';
+  import { isGameSettingsOpen, isLiveStatsOpen } from '$lib/stores/layout';
   import GitHubLogo from 'phosphor-svelte/lib/GithubLogo';
 </script>
 
@@ -28,6 +29,10 @@
       </div>
     </div>
   </div>
+
+  {#if $isGameSettingsOpen}
+    <Settings />
+  {/if}
 
   {#if $isLiveStatsOpen}
     <LiveStats />

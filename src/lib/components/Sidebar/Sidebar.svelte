@@ -9,11 +9,12 @@
     riskLevel,
     rowCount,
   } from '$lib/stores/game';
-  import { isLiveStatsOpen } from '$lib/stores/layout';
+  import { isGameSettingsOpen, isLiveStatsOpen } from '$lib/stores/layout';
   import { BetMode, RiskLevel } from '$lib/types';
   import { flyAndScale } from '$lib/utils/transitions';
   import { Popover, Tooltip } from 'bits-ui';
   import ChartLine from 'phosphor-svelte/lib/ChartLine';
+  import GearSix from 'phosphor-svelte/lib/GearSix';
   import Infinity from 'phosphor-svelte/lib/Infinity';
   import Question from 'phosphor-svelte/lib/Question';
   import type { FormEventHandler } from 'svelte/elements';
@@ -260,7 +261,32 @@
   </button>
 
   <div class="mt-auto pt-5">
-    <div class="flex items-center gap-2 border-t border-slate-600 pt-3">
+    <div class="flex items-center gap-4 border-t border-slate-600 pt-3">
+      <!-- Settings Button -->
+      <Tooltip.Root openDelay={0} closeOnPointerDown={false}>
+        <Tooltip.Trigger asChild let:builder>
+          <button
+            use:builder.action
+            {...builder}
+            on:click={() => ($isGameSettingsOpen = !$isGameSettingsOpen)}
+            class={twMerge(
+              'rounded-full p-2 text-slate-300 transition hover:bg-slate-600 active:bg-slate-500',
+              $isGameSettingsOpen && 'text-slate-100',
+            )}
+          >
+            <GearSix class="size-6" weight="fill" />
+          </button>
+        </Tooltip.Trigger>
+        <Tooltip.Content
+          inTransition={flyAndScale}
+          sideOffset={4}
+          class="z-30 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
+        >
+          <Tooltip.Arrow />
+          <p>{$isGameSettingsOpen ? 'Close' : 'Open'} Game Settings</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
+
       <!-- Live Stats Button -->
       <Tooltip.Root openDelay={0} closeOnPointerDown={false}>
         <Tooltip.Trigger asChild let:builder>
