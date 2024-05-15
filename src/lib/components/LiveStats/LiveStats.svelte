@@ -5,6 +5,7 @@
   import Close from 'phosphor-svelte/lib/X';
   import { scale } from 'svelte/transition';
   import Profit from './Profit.svelte';
+  import ProfitHistoryChart from './ProfitHistoryChart.svelte';
 
   let dragHandleElement: HTMLDivElement;
 </script>
@@ -32,6 +33,7 @@
   <div class="p-4">
     <div class="flex flex-col gap-4">
       <Profit />
+      <ProfitHistoryChart />
     </div>
   </div>
 </div>

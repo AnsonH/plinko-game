@@ -1,17 +1,12 @@
 <script lang="ts">
-  import { twMerge } from 'tailwind-merge';
   import { winRecords } from '$lib/stores/game';
+  import { formatCurrency } from '$lib/utils/numbers';
+  import { twMerge } from 'tailwind-merge';
 
   $: profit = $winRecords.reduce((acc, { profit }) => acc + profit, 0);
   $: wins = $winRecords.filter(({ profit }) => profit >= 0).length;
   $: losses = $winRecords.filter(({ profit }) => profit < 0).length;
 
-  $: profitFormatted = profit.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-    style: 'currency',
-    currency: 'USD',
-  });
   $: winsFormatted = wins.toLocaleString('en-US');
   $: lossesFormatted = losses.toLocaleString('en-US');
 </script>
@@ -22,7 +17,7 @@
     <p
       class={twMerge('font-semibold tabular-nums', profit >= 0 ? 'text-green-400' : 'text-red-400')}
     >
-      {profitFormatted}
+      {formatCurrency(profit)}
     </p>
   </div>
   <div class="mx-4 w-0.5 bg-slate-600" aria-hidden />

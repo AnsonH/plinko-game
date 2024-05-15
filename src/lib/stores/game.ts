@@ -27,6 +27,8 @@ export const riskLevel = writable<RiskLevel>(RiskLevel.MEDIUM);
 
 export const winRecords = writable<WinRecord[]>([]);
 
+export const totalProfitHistory = writable<number[]>([0]);
+
 export const isLiveStatsOpen = writable<boolean>(false);
 
 export const balance = persisted<number>(LOCAL_STORAGE_KEY.BALANCE, 200);

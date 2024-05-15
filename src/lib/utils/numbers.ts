@@ -79,6 +79,21 @@ export function factorial(n: number): number {
 }
 
 /**
+ * @example
+ * formatCurrency(123456.789); // "$123,456.79"
+ * formatCurrency(2); // "$2.00"
+ * formatCurrency(-2); // "-$2.00"
+ */
+export function formatCurrency(value: number): string {
+  return value.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    style: 'currency',
+    currency: 'USD',
+  });
+}
+
+/**
  * Gets a random number in the range of `[min, max]`.
  */
 export function getRandomBetween(min: number, max: number): number {

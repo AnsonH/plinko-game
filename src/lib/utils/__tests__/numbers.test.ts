@@ -5,6 +5,7 @@ import {
   countValueOccurrences,
   dotProduct,
   factorial,
+  formatCurrency,
   getRandomBetween,
 } from '../numbers';
 
@@ -51,6 +52,21 @@ describe('factorial', () => {
     const inputs = [0, 1, 2, 3, 4, 5];
     const expectedOutputs = [1, 1, 2, 6, 24, 120];
     expect(inputs.map(factorial)).toEqual(expectedOutputs);
+  });
+});
+
+describe('formatCurrency', () => {
+  it('formats a number as currency', () => {
+    const testCases: [number, string][] = [
+      [10, '$10.00'],
+      [123456.789, '$123,456.79'],
+      [0, '$0.00'],
+      [-1234.567, '-$1,234.57'],
+    ];
+
+    testCases.forEach(([input, expectedOutput]) => {
+      expect(formatCurrency(input)).toBe(expectedOutput);
+    });
   });
 });
 
