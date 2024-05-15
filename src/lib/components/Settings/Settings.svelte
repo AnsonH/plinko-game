@@ -1,9 +1,17 @@
 <script lang="ts">
   import { isGameSettingsOpen } from '$lib/stores/layout';
   import { isAnimationOn } from '$lib/stores/settings';
+  import { hasPreferReducedMotion } from '$lib/utils/settings';
   import { Label } from 'bits-ui';
   import GearSix from 'phosphor-svelte/lib/GearSix';
+  import { onMount } from 'svelte';
   import { DraggableWindow, Switch } from '../ui';
+
+  onMount(() => {
+    if (hasPreferReducedMotion()) {
+      $isAnimationOn = false;
+    }
+  });
 </script>
 
 <DraggableWindow
