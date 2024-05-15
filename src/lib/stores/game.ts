@@ -27,6 +27,12 @@ export const riskLevel = writable<RiskLevel>(RiskLevel.MEDIUM);
 
 export const winRecords = writable<WinRecord[]>([]);
 
+/**
+ * History of total profits. Should be updated whenever a new win record is pushed
+ * to `winRecords` store.
+ *
+ * We deliberately don't use `derived(winRecords, ...)` to optimize performance.
+ */
 export const totalProfitHistory = writable<number[]>([0]);
 
 export const isLiveStatsOpen = writable<boolean>(false);
