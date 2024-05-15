@@ -38,7 +38,6 @@
       <div aria-hidden="true" class="h-[1px] bg-slate-700" />
       <div class="flex items-center justify-between p-2">
         <p class="text-sm text-slate-500">
-          Created by
           <a
             href="https://www.ansonh.com"
             target="_blank"
@@ -47,6 +46,7 @@
           >
             Anson Heung
           </a>
+          © 2024
         </p>
         <a
           href="https://github.com/AnsonH/plinko-game"
