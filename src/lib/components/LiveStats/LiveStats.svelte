@@ -1,14 +1,15 @@
 <script lang="ts">
-  import { isLiveStatsOpen, totalProfitHistory, winRecords } from '$lib/stores/game';
+  import { totalProfitHistory, winRecords } from '$lib/stores/game';
+  import { isLiveStatsOpen } from '$lib/stores/layout';
+  import { flyAndScale } from '$lib/utils/transitions';
   import { draggable } from '@neodrag/svelte';
+  import { Tooltip } from 'bits-ui';
+  import ArrowClockwise from 'phosphor-svelte/lib/ArrowClockwise';
   import ChartLine from 'phosphor-svelte/lib/ChartLine';
   import Close from 'phosphor-svelte/lib/X';
-  import ArrowClockwise from 'phosphor-svelte/lib/ArrowClockwise';
   import { scale } from 'svelte/transition';
   import Profit from './Profit.svelte';
   import ProfitHistoryChart from './ProfitHistoryChart.svelte';
-  import { Tooltip } from 'bits-ui';
-  import { flyAndScale } from '$lib/utils/transitions';
 
   let dragHandleElement: HTMLDivElement;
 

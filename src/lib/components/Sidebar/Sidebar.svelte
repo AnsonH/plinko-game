@@ -5,11 +5,11 @@
     balance,
     betAmount,
     betAmountOfExistingBalls,
-    isLiveStatsOpen,
     plinkoEngine,
     riskLevel,
     rowCount,
   } from '$lib/stores/game';
+  import { isLiveStatsOpen } from '$lib/stores/layout';
   import { BetMode, RiskLevel } from '$lib/types';
   import { flyAndScale } from '$lib/utils/transitions';
   import { Popover, Tooltip } from 'bits-ui';

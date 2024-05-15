@@ -4,7 +4,7 @@
   import LiveStats from '$lib/components/LiveStats/LiveStats.svelte';
   import Plinko from '$lib/components/Plinko';
   import Sidebar from '$lib/components/Sidebar';
-  import { isLiveStatsOpen } from '$lib/stores/game';
+  import { isLiveStatsOpen } from '$lib/stores/layout';
   import GitHubLogo from 'phosphor-svelte/lib/GithubLogo';
 </script>
 
