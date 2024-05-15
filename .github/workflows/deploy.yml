@@ -65,7 +65,7 @@ jobs:
           name: build
 
       - name: List directory contents
-        run: ls -l build
+        run: ls -la
 
       - name: Current working directory
         run: pwd
