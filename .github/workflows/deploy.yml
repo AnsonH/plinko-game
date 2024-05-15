@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    pull_request:
-      types: [opened, synchronize]
+  pull_request:
+    types: [opened, synchronize]
 
 env:
   BRANCH_NAME: ${{ github.ref_name }}
