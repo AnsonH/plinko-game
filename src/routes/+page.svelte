@@ -1,11 +1,10 @@
 <script lang="ts">
   import logo from '$lib/assets/logo.svg';
   import Balance from '$lib/components/Balance.svelte';
-  import LiveStats from '$lib/components/LiveStats/LiveStats.svelte';
+  import LiveStatsWindow from '$lib/components/LiveStatsWindow/LiveStatsWindow.svelte';
   import Plinko from '$lib/components/Plinko';
-  import Settings from '$lib/components/Settings';
+  import SettingsWindow from '$lib/components/SettingsWindow';
   import Sidebar from '$lib/components/Sidebar';
-  import { isGameSettingsOpen, isLiveStatsOpen } from '$lib/stores/layout';
   import GitHubLogo from 'phosphor-svelte/lib/GithubLogo';
 </script>
 
@@ -30,13 +29,8 @@
     </div>
   </div>
 
-  {#if $isGameSettingsOpen}
-    <Settings />
-  {/if}
-
-  {#if $isLiveStatsOpen}
-    <LiveStats />
-  {/if}
+  <SettingsWindow />
+  <LiveStatsWindow />
 
   <footer class="px-5 pb-4 pt-16">
     <div class="mx-auto max-w-[40rem]">
