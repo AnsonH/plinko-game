@@ -99,22 +99,9 @@ jobs:
           NETLIFY_PREVIEW_URL: ${{ steps.url_preview.outputs.NETLIFY_PREVIEW_URL }}
         with:
           script: |
-            async function comment(){
-              const result = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                commit_sha: context.sha,
-              })
-              const issueNumber = result.data[0].number
-              if(issueNumber){
-                await github.rest.issues.createComment({
-                  issue_number: issueNumber,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: 'Preview URL: ' + process.env.NETLIFY_PREVIEW_URL
-                })
-              }else{
-                console.log('No PR found for commit ' + context.sha)
-              }
-            }
-            comment()
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Preview URL: ' + process.env.NETLIFY_PREVIEW_URL
+            })
