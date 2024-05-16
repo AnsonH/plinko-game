@@ -40,7 +40,9 @@
   $: isBetAmountNegative = $betAmount < 0;
   $: isBetExceedBalance = $betAmount > $balance;
   $: isAutoBetInputNegative = autoBetInput < 0;
-  $: hasError = isBetAmountNegative || isBetExceedBalance || isAutoBetInputNegative;
+
+  $: isDropBallDisabled =
+    $plinkoEngine === null || isBetAmountNegative || isBetExceedBalance || isAutoBetInputNegative;
 
   $: hasOutstandingBalls = Object.keys($betAmountOfExistingBalls).length > 0;
 
@@ -117,7 +119,7 @@
   const rowCounts = rowCountOptions.map((value) => ({ value, label: value.toString() }));
 </script>
 
-<div class="flex flex-col gap-5 bg-slate-700 p-3 lg:min-w-[300px]">
+<div class="flex flex-col gap-5 bg-slate-700 p-3 lg:max-w-80">
   <div class="flex gap-1 rounded-full bg-slate-900 p-1">
     {#each betModes as { value, label }}
       <button
@@ -245,7 +247,7 @@
 
   <button
     on:click={handleBetClick}
-    disabled={hasError}
+    disabled={isDropBallDisabled}
     class={twMerge(
       'touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-slate-900 transition-colors hover:bg-green-400 active:bg-green-600 disabled:bg-neutral-600 disabled:text-neutral-400',
       autoBetInterval !== null && 'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600',
