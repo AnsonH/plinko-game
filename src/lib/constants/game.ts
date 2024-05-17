@@ -1,4 +1,5 @@
 import { RiskLevel } from '$lib/types';
+import { getBinColors } from '$lib/utils/colors';
 import { computeBinProbabilities } from '$lib/utils/numbers';
 
 /**
@@ -15,6 +16,17 @@ export type RowCount = (typeof rowCountOptions)[number];
  * Interval (in milliseconds) for placing auto bets.
  */
 export const autoBetIntervalMs = 250;
+
+/**
+ * For each row count, the background and shadow colors of each bin.
+ */
+export const binColorsByRowCount = rowCountOptions.reduce(
+  (acc, rowCount) => {
+    acc[rowCount] = getBinColors(rowCount);
+    return acc;
+  },
+  {} as Record<RowCount, ReturnType<typeof getBinColors>>,
+);
 
 /**
  * For each row count, what's the probabilities of a ball falling into each bin.

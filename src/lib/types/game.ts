@@ -1,3 +1,4 @@
+import type { RowCount } from '$lib/constants/game';
 export type { RowCount } from '$lib/constants/game';
 
 export enum BetMode {
@@ -33,6 +34,10 @@ export type WinRecord = {
    * How much the player has bet.
    */
   betAmount: number;
+  /**
+   * Number of pin rows at the time of winning.
+   */
+  rowCount: RowCount;
   /**
    * Zero-based index of which bin the ball fell into (leftmost bin is 0).
    */

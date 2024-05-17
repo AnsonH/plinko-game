@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { binPayouts } from '$lib/constants/game';
+  import { binColorsByRowCount, binPayouts } from '$lib/constants/game';
   import { binColors, plinkoEngine, riskLevel, rowCount, winRecords } from '$lib/stores/game';
   import { isAnimationOn } from '$lib/stores/settings';
   import type { Action } from 'svelte/action';
@@ -59,8 +59,8 @@
         <div
           use:initAnimation
           class="flex min-w-0 flex-1 items-center justify-center rounded-sm text-[clamp(6px,2.784px+0.87vw,8px)] font-bold text-gray-950 shadow-[0_2px_var(--shadow-color)] lg:rounded-md lg:text-[clamp(10px,-16.944px+2.632vw,12px)] lg:shadow-[0_3px_var(--shadow-color)]"
-          style:background-color={$binColors.background[binIndex]}
-          style:--shadow-color={$binColors.shadow[binIndex]}
+          style:background-color={binColorsByRowCount[$rowCount].background[binIndex]}
+          style:--shadow-color={binColorsByRowCount[$rowCount].shadow[binIndex]}
         >
           {payout}{payout < 100 ? '×' : ''}
         </div>
