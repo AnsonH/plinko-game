@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./static/android-chrome-192x192.png" width="100" height="100" alt="Logo">
   <h1>plinko-game</h1>
-  <p>A web Plinko game inspired by <a href="https://stake.com/casino/games/plinko" target="_blank" rel="noreferrer">Stake.com's Plinko game</a>.</p>
+  <p>A web Plinko game inspired by Stake.com's Plinko game.</p>
   <p>Play now 👉 <a href="https://plinko-web-game.netlify.app/" target="_blank" rel="noreferrer">https://plinko-web-game.netlify.app/</a></p>
   <img src="./screenshots/desktop-1.jpg" width="800">
 </div>
@@ -54,6 +54,32 @@ The entire site is statically generated using [@sveltejs/adapter-static](https:/
 
    ```bash
    pnpm preview
+   ```
+
+### Testing
+
+For unit tests, run:
+
+```bash
+pnpm test:unit
+```
+
+For end-to-end tests powered by [Playwright](https://playwright.dev/):
+
+1. Build for production
+
+   ```bash
+   pnpm build
+   ```
+
+2. Run the tests
+
+   ```bash
+   # Run in UI mode (recommended when writing tests)
+   pnpm test:e2e:ui
+
+   # Alternatively, run in headless mode
+   pnpm test:e2e
    ```
 
 ### Benchmark

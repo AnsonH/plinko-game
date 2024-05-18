@@ -1,5 +1,5 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
-import { binColor } from '$lib/constants/game';
+import { LOCAL_STORAGE_KEY, binColor } from '$lib/constants/game';
 import {
   RiskLevel,
   type BetAmountOfExistingBalls,
@@ -10,10 +10,6 @@ import { interpolateRgbColors } from '$lib/utils/colors';
 import { countValueOccurrences } from '$lib/utils/numbers';
 import { persisted } from 'svelte-persisted-store';
 import { derived, writable } from 'svelte/store';
-
-const LOCAL_STORAGE_KEY = {
-  BALANCE: 'plinko_balance',
-} as const;
 
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
 

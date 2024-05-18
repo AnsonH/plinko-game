@@ -2,8 +2,7 @@ name: Build and deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
     types: [opened, synchronize]
 
@@ -99,9 +98,30 @@ jobs:
           NETLIFY_PREVIEW_URL: ${{ steps.url_preview.outputs.NETLIFY_PREVIEW_URL }}
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Preview URL: ' + process.env.NETLIFY_PREVIEW_URL
-            })
+            const issue_number = context.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const body = 'Preview URL: ' + process.env.NETLIFY_PREVIEW_URL;
+
+            const comments = await github.rest.issues.listComments({
+              issue_number: issue_number,
+              owner: owner,
+              repo: repo
+            });
+            const botComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]');
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                comment_id: botComment.id,
+                owner: owner,
+                repo: repo,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: issue_number,
+                owner: owner,
+                repo: repo,
+                body: body
+              });
+            }
