@@ -2,6 +2,10 @@ import { RiskLevel } from '$lib/types';
 import { getBinColors } from '$lib/utils/colors';
 import { computeBinProbabilities } from '$lib/utils/numbers';
 
+export const LOCAL_STORAGE_KEY = {
+  BALANCE: 'plinko_balance',
+} as const;
+
 /**
  * Range of row counts the game supports.
  */
