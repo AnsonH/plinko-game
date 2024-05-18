@@ -15,8 +15,10 @@ permissions:
   # So that URL preview link can be commented on the PR
   pull-requests: write
 
+# Deploy to Netlify guide:
+# https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -42,37 +44,10 @@ jobs:
         run: |
           pnpm build
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          # this should match the `pages` option in your adapter-static options
-          path: 'build/'
-
-  # Deploy to Netlify guide:
-  # https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
       - name: Install Netlify
         run: pnpm install -g netlify-cli@17.23.5
 
-      # Download the build artifact from the previous `build` job
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: build
-
       - name: Deploy to Netlify
-        id: netlify_deploy
         run: |
           prod_flag=""
           if [ "$BRANCH_NAME" = "main" ]; then prod_flag="--prod"; fi
