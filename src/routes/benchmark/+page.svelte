@@ -5,7 +5,7 @@
   import { plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';
 
-  let dropBallInterval: number | null = null;
+  let dropBallInterval: ReturnType<typeof setInterval> | null = null;
 
   let ballsDropped = 0;
 

@@ -35,7 +35,7 @@
    */
   let autoBetsLeft: number | null = null;
 
-  let autoBetInterval: number | null = null;
+  let autoBetInterval: ReturnType<typeof setInterval> | null = null;
 
   $: isBetAmountNegative = $betAmount < 0;
   $: isBetExceedBalance = $betAmount > $balance;
