@@ -1,5 +1,5 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
-import { LOCAL_STORAGE_KEY, binColor } from '$lib/constants/game';
+import { binColor } from '$lib/constants/game';
 import {
   RiskLevel,
   type BetAmountOfExistingBalls,
@@ -8,7 +8,6 @@ import {
 } from '$lib/types';
 import { interpolateRgbColors } from '$lib/utils/colors';
 import { countValueOccurrences } from '$lib/utils/numbers';
-import { persisted } from 'svelte-persisted-store';
 import { derived, writable } from 'svelte/store';
 
 export const plinkoEngine = writable<PlinkoEngine | null>(null);
@@ -31,7 +30,14 @@ export const winRecords = writable<WinRecord[]>([]);
  */
 export const totalProfitHistory = writable<number[]>([0]);
 
-export const balance = persisted<number>(LOCAL_STORAGE_KEY.BALANCE, 200);
+/**
+ * Game balance, which is saved to local storage.
+ *
+ * We only save the balance to local storage on browser `beforeunload` event instead of
+ * on every balance change. This prevents unnecessary writes to local storage, which can
+ * be slow on low-end devices.
+ */
+export const balance = writable<number>(200);
 
 /**
  * RGB colors for every bin. The length of the array is the number of bins.
