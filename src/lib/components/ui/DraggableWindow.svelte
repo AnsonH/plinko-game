@@ -1,8 +1,10 @@
 <!--
-  Available slots:
-    - `title`: Title of the window
-    - `title-bar-actions`: Additional action buttons in the title bar
-    - Default: The window content
+@component
+  
+Available slots:
+  - `title`: Title of the window
+  - `title-bar-actions`: Additional action buttons in the title bar
+  - Default: The window content
 -->
 
 <script lang="ts">
