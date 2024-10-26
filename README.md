@@ -26,7 +26,7 @@ This project is a replication of [Stake.com's Plinko game](https://stake.com/cas
 > [!NOTE]
 > Requires Node.js 20 or later.
 
-1. Install [pnpm](https://pnpm.io/installation)
+1. Install [pnpm](https://pnpm.io/installation) version 9 or later
 2. Clone this repository
 3. Install dependencies
 
