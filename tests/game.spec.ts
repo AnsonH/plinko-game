@@ -25,6 +25,16 @@ test.describe('Balance', () => {
 
     await expect(page.getByText('1,234.00')).toBeVisible();
   });
+
+  test('can handle improper local storage value', async ({ page, context }) => {
+    await context.addInitScript(() => {
+      window.localStorage.setItem('plinko_balance', 'foo_bar');
+    });
+
+    await page.goto('/');
+
+    await expect(page.getByText('200.00')).toBeVisible();
+  });
 });
 
 test.describe('Manual Betting', () => {

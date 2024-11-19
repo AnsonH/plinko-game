@@ -1,5 +1,5 @@
 import PlinkoEngine from '$lib/components/Plinko/PlinkoEngine';
-import { binColor } from '$lib/constants/game';
+import { binColor, DEFAULT_BALANCE } from '$lib/constants/game';
 import {
   RiskLevel,
   type BetAmountOfExistingBalls,
@@ -37,7 +37,7 @@ export const totalProfitHistory = writable<number[]>([0]);
  * on every balance change. This prevents unnecessary writes to local storage, which can
  * be slow on low-end devices.
  */
-export const balance = writable<number>(200);
+export const balance = writable<number>(DEFAULT_BALANCE);
 
 /**
  * RGB colors for every bin. The length of the array is the number of bins.
