@@ -12,6 +12,12 @@ Plinko is a classic game where the player drops a ball in a multi-row pin pyrami
 
 This project is a replication of [Stake.com's Plinko game](https://stake.com/casino/games/plinko), created using [Svelte](https://svelte.dev/), [Tailwind CSS](https://tailwindcss.com/), and [matter-js](https://github.com/liabru/matter-js). This website is a fun personal project to learn Svelte, and it is not affiliated with Stake.com in any way. I don't encourage gambling, so that's why I created a free-to-play version of the game.
 
+### This project is NON-PROFIT
+
+Please do NOT send me emails or invitations asking me to implement a Plinko game for your company or personal portfolio. This project is for personal hobby only. It is NOT a promotion, and I will decline any freelance invitations.
+
+Feel free to fork this project on your own if you want to build on top of it.
+
 ## Features
 
 - 🤑 100% free to play, add money at any time (~~not another crypto scam~~)
