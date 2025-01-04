@@ -7,14 +7,15 @@
   /**
    * Bounce animations for each bin, which is played when a ball falls into the bin.
    */
-  let binAnimations: Animation[] = [];
+  let binAnimations: Animation[] = $state([]);
 
-  $: {
-    if ($winRecords.length) {
-      const lastWinBinIndex = $winRecords[$winRecords.length - 1].binIndex;
+  // NOTE: Not using $effect because it'll play animation if we toggle on animation in settings
+  winRecords.subscribe((value) => {
+    if (value.length) {
+      const lastWinBinIndex = value[value.length - 1].binIndex;
       playAnimation(lastWinBinIndex);
     }
-  }
+  });
 
   const initAnimation: Action<HTMLDivElement> = (node) => {
     const bounceAnimation = node.animate(

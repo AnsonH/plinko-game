@@ -20,12 +20,12 @@
   import type { FormEventHandler } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  let betMode: BetMode = BetMode.MANUAL;
+  let betMode: BetMode = $state(BetMode.MANUAL);
 
   /**
    * When `betMode` is `AUTO`, the number of bets to be placed. Zero means infinite bets.
    */
-  let autoBetInput = 0;
+  let autoBetInput = $state(0);
 
   /**
    * Number of auto bets remaining when `betMode` is `AUTO`.
@@ -33,18 +33,19 @@
    * - `number`: Finite count of how many bets left. It decrements from `autoBetInput` to 0.
    * - `null`: For infinite bets (i.e. `autoBetInput` is 0).
    */
-  let autoBetsLeft: number | null = null;
+  let autoBetsLeft: number | null = $state(null);
 
-  let autoBetInterval: ReturnType<typeof setInterval> | null = null;
+  let autoBetInterval: ReturnType<typeof setInterval> | null = $state(null);
 
-  $: isBetAmountNegative = $betAmount < 0;
-  $: isBetExceedBalance = $betAmount > $balance;
-  $: isAutoBetInputNegative = autoBetInput < 0;
+  let isBetAmountNegative = $derived($betAmount < 0);
+  let isBetExceedBalance = $derived($betAmount > $balance);
+  let isAutoBetInputNegative = $derived(autoBetInput < 0);
 
-  $: isDropBallDisabled =
-    $plinkoEngine === null || isBetAmountNegative || isBetExceedBalance || isAutoBetInputNegative;
+  let isDropBallDisabled = $derived(
+    $plinkoEngine === null || isBetAmountNegative || isBetExceedBalance || isAutoBetInputNegative,
+  );
 
-  $: hasOutstandingBalls = Object.keys($betAmountOfExistingBalls).length > 0;
+  let hasOutstandingBalls = $derived(Object.keys($betAmountOfExistingBalls).length > 0);
 
   const handleBetAmountFocusOut: FormEventHandler<HTMLInputElement> = (e) => {
     const parsedValue = parseFloat(e.currentTarget.value.trim());
@@ -124,7 +125,7 @@
     {#each betModes as { value, label }}
       <button
         disabled={autoBetInterval !== null}
-        on:click={() => (betMode = value)}
+        onclick={() => (betMode = value)}
         class={twMerge(
           'flex-1 rounded-full py-2 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-slate-600 active:[&:not(:disabled)]:bg-slate-500',
           betMode === value && 'bg-slate-600',
@@ -142,7 +143,7 @@
         <input
           id="betAmount"
           value={$betAmount}
-          on:focusout={handleBetAmountFocusOut}
+          onfocusout={handleBetAmountFocusOut}
           disabled={autoBetInterval !== null}
           type="number"
           min="0"
@@ -154,11 +155,11 @@
               'border-red-500 focus:border-red-400 hover:[&:not(:disabled)]:border-red-400',
           )}
         />
-        <div class="absolute left-3 top-2 select-none text-slate-500" aria-hidden>$</div>
+        <div class="absolute left-3 top-2 select-none text-slate-500" aria-hidden="true">$</div>
       </div>
       <button
         disabled={autoBetInterval !== null}
-        on:click={() => {
+        onclick={() => {
           $betAmount = parseFloat(($betAmount / 2).toFixed(2));
         }}
         class="touch-manipulation bg-slate-600 px-4 font-bold diagonal-fractions text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-slate-500 active:[&:not(:disabled)]:bg-slate-400"
@@ -167,7 +168,7 @@
       </button>
       <button
         disabled={autoBetInterval !== null}
-        on:click={() => {
+        onclick={() => {
           $betAmount = parseFloat(($betAmount * 2).toFixed(2));
         }}
         class="relative touch-manipulation rounded-r-md bg-slate-600 px-4 text-sm font-bold text-white transition-colors after:absolute after:left-0 after:inline-block after:h-1/2 after:w-[2px] after:bg-slate-800 after:content-[''] disabled:cursor-not-allowed disabled:opacity-50 hover:[&:not(:disabled)]:bg-slate-500 active:[&:not(:disabled)]:bg-slate-400"
@@ -226,7 +227,7 @@
           id="autoBetInput"
           value={autoBetInterval === null ? autoBetInput : autoBetsLeft ?? 0}
           disabled={autoBetInterval !== null}
-          on:focusout={handleAutoBetInputFocusOut}
+          onfocusout={handleAutoBetInputFocusOut}
           type="number"
           min="0"
           inputmode="numeric"
@@ -246,7 +247,7 @@
   {/if}
 
   <button
-    on:click={handleBetClick}
+    onclick={handleBetClick}
     disabled={isDropBallDisabled}
     class={twMerge(
       'touch-manipulation rounded-md bg-green-500 py-3 font-semibold text-slate-900 transition-colors hover:bg-green-400 active:bg-green-600 disabled:bg-neutral-600 disabled:text-neutral-400',
@@ -270,7 +271,7 @@
           <button
             use:builder.action
             {...builder}
-            on:click={() => ($isGameSettingsOpen = !$isGameSettingsOpen)}
+            onclick={() => ($isGameSettingsOpen = !$isGameSettingsOpen)}
             class={twMerge(
               'rounded-full p-2 text-slate-300 transition hover:bg-slate-600 active:bg-slate-500',
               $isGameSettingsOpen && 'text-slate-100',
@@ -295,7 +296,7 @@
           <button
             use:builder.action
             {...builder}
-            on:click={() => ($isLiveStatsOpen = !$isLiveStatsOpen)}
+            onclick={() => ($isLiveStatsOpen = !$isLiveStatsOpen)}
             class={twMerge(
               'rounded-full p-2 text-slate-300 transition hover:bg-slate-600 active:bg-slate-500',
               $isLiveStatsOpen && 'text-slate-100',

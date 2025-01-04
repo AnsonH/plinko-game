@@ -3,12 +3,12 @@
   import { formatCurrency } from '$lib/utils/numbers';
   import { twMerge } from 'tailwind-merge';
 
-  $: profit = $winRecords.reduce((acc, { profit }) => acc + profit, 0);
-  $: wins = $winRecords.filter(({ profit }) => profit >= 0).length;
-  $: losses = $winRecords.filter(({ profit }) => profit < 0).length;
+  let profit = $derived($winRecords.reduce((acc, { profit }) => acc + profit, 0));
+  let wins = $derived($winRecords.filter(({ profit }) => profit >= 0).length);
+  let losses = $derived($winRecords.filter(({ profit }) => profit < 0).length);
 
-  $: winsFormatted = wins.toLocaleString('en-US');
-  $: lossesFormatted = losses.toLocaleString('en-US');
+  let winsFormatted = $derived(wins.toLocaleString('en-US'));
+  let lossesFormatted = $derived(losses.toLocaleString('en-US'));
 </script>
 
 <div class="flex rounded-md bg-slate-900 p-4 text-sm">
@@ -20,7 +20,7 @@
       {formatCurrency(profit)}
     </p>
   </div>
-  <div class="mx-4 w-0.5 bg-slate-600" aria-hidden />
+  <div class="mx-4 w-0.5 bg-slate-600" aria-hidden="true"></div>
   <div class="flex-1 space-y-2">
     <div>
       <p class="font-medium text-slate-400">Wins</p>

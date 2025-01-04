@@ -7,14 +7,13 @@
   import Sidebar from '$lib/components/Sidebar';
   import { setBalanceFromLocalStorage, writeBalanceToLocalStorage } from '$lib/utils/game';
   import GitHubLogo from 'phosphor-svelte/lib/GithubLogo';
-  import { onMount } from 'svelte';
 
-  onMount(() => {
+  $effect(() => {
     setBalanceFromLocalStorage();
   });
 </script>
 
-<svelte:window on:beforeunload={writeBalanceToLocalStorage} />
+<svelte:window onbeforeunload={writeBalanceToLocalStorage} />
 
 <div class="relative flex min-h-dvh w-full flex-col">
   <nav class="sticky top-0 z-10 w-full bg-gray-700 px-5 drop-shadow-lg">
@@ -42,7 +41,7 @@
 
   <footer class="px-5 pb-4 pt-16">
     <div class="mx-auto max-w-[40rem]">
-      <div aria-hidden="true" class="h-[1px] bg-slate-700" />
+      <div aria-hidden="true" class="h-[1px] bg-slate-700"></div>
       <div class="flex items-center justify-between p-2">
         <p class="text-sm text-slate-500">
           <a
