@@ -21,8 +21,8 @@ importers:
         specifier: ^0.19.0
         version: 0.19.0
       svelte-persisted-store:
-        specifier: ^0.9.2
-        version: 0.9.2(svelte@5.16.1)
+        specifier: ^0.12.0
+        version: 0.12.0(svelte@5.16.1)
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -1683,11 +1683,11 @@ packages:
       svelte:
         optional: true
 
-  svelte-persisted-store@0.9.2:
-    resolution: {integrity: sha512-jp7W98yMgBhgz5fWnjZBCmCX89Rse13iqVpjK+1ByS6iYkvW9WT+F2vwsep3f0Zy/tnGYbb8MI+9Vx7W0NQsPg==}
+  svelte-persisted-store@0.12.0:
+    resolution: {integrity: sha512-BdBQr2SGSJ+rDWH8/aEV5GthBJDapVP0GP3fuUCA7TjYG5ctcB+O9Mj9ZC0+Jo1oJMfZUd1y9H68NFRR5MyIJA==}
     engines: {node: '>=0.14'}
     peerDependencies:
-      svelte: ^3.48.0 || ^4.0.0 || ^5.0.0-next.0
+      svelte: ^3.48.0 || ^4 || ^5
 
   svelte@5.16.1:
     resolution: {integrity: sha512-FsA1OjAKMAFSDob6j/Tv2ZV9rY4SeqPd1WXQlQkFkePAozSHLp6tbkU9qa1xJ+uTRzMSM2Vx3USdsYZBXd3H3g==}
@@ -3337,7 +3337,7 @@ snapshots:
     optionalDependencies:
       svelte: 5.16.1
 
-  svelte-persisted-store@0.9.2(svelte@5.16.1):
+  svelte-persisted-store@0.12.0(svelte@5.16.1):
     dependencies:
       svelte: 5.16.1
 
