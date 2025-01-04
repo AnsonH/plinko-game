@@ -52,7 +52,7 @@
           >
             Anson Heung
           </a>
-          © 2024
+          © {new Date().getFullYear()}
         </p>
         <a
           href="https://github.com/AnsonH/plinko-game"
