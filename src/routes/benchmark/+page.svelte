@@ -5,9 +5,9 @@
   import { plinkoEngine, riskLevel, rowCount } from '$lib/stores/game';
   import { RiskLevel } from '$lib/types';
 
-  let dropBallInterval: ReturnType<typeof setInterval> | null = null;
+  let dropBallInterval: ReturnType<typeof setInterval> | null = $state(null);
 
-  let ballsDropped = 0;
+  let ballsDropped = $state(0);
 
   function dropSingleBall() {
     $plinkoEngine?.dropBall();
@@ -52,12 +52,12 @@
     </select>
   </div>
 
-  <button on:click={dropSingleBall} class="bg-cyan-100 p-2">Drop Ball</button>
+  <button onclick={dropSingleBall} class="bg-cyan-100 p-2">Drop Ball</button>
 
   {#if dropBallInterval === null}
-    <button on:click={startDropBallInterval} class="bg-cyan-100 p-2">Start Auto Drop</button>
+    <button onclick={startDropBallInterval} class="bg-cyan-100 p-2">Start Auto Drop</button>
   {:else}
-    <button on:click={stopDropBallInterval} class="bg-cyan-100 p-2">Stop Auto Drop</button>
+    <button onclick={stopDropBallInterval} class="bg-cyan-100 p-2">Stop Auto Drop</button>
   {/if}
 
   <p>Dropped: <span>{ballsDropped}</span></p>

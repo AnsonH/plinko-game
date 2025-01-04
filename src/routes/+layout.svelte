@@ -1,6 +1,9 @@
-<script>
-  import '../app.css';
+<script lang="ts">
   import ogImage from '$lib/assets/og_image.jpg';
+  import type { Snippet } from 'svelte';
+  import '../app.css';
+
+  let { children }: { children: Snippet } = $props();
 </script>
 
 <svelte:head>
@@ -17,4 +20,4 @@
   <meta property="og:image" content={ogImage} />
 </svelte:head>
 
-<slot />
+{@render children?.()}

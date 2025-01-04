@@ -6,10 +6,12 @@
   import Chart from 'chart.js/auto';
   import type { Action } from 'svelte/action';
 
-  $: binIndexes = Object.keys($binProbabilities);
-  $: binProbabilitiesInPercent = Object.values($binProbabilities).map((prob) => prob * 100);
-  $: expectedProbabilitiesInPercent = binProbabilitiesByRowCount[$rowCount].map(
-    (prob) => prob * 100,
+  let binIndexes = $derived(Object.keys($binProbabilities));
+  let binProbabilitiesInPercent = $derived(
+    Object.values($binProbabilities).map((prob) => prob * 100),
+  );
+  let expectedProbabilitiesInPercent = $derived(
+    binProbabilitiesByRowCount[$rowCount].map((prob) => prob * 100),
   );
 
   const getWeightedPayout = (
@@ -80,7 +82,7 @@
       binProbabilities: binProbabilitiesInPercent,
       expectedProbabilities: expectedProbabilitiesInPercent,
     }}
-  />
+  ></canvas>
 </div>
 <table class="my-4 text-xs">
   <thead>

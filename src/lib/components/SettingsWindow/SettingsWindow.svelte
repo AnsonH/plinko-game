@@ -6,10 +6,9 @@
   import { hasPreferReducedMotion } from '$lib/utils/settings';
   import { Label } from 'bits-ui';
   import GearSix from 'phosphor-svelte/lib/GearSix';
-  import { onMount } from 'svelte';
   import { DraggableWindow, Switch } from '../ui';
 
-  onMount(() => {
+  $effect(() => {
     if (hasPreferReducedMotion()) {
       $isAnimationOn = false;
     }
@@ -21,10 +20,10 @@
     onClose={() => ($isGameSettingsOpen = false)}
     class="fixed bottom-8 left-8 w-[18rem]"
   >
-    <svelte:fragment slot="title">
+    {#snippet title()}
       <GearSix weight="fill" class="text-xl text-slate-300" />
       <p class="text-sm font-medium text-white">Game Settings</p>
-    </svelte:fragment>
+    {/snippet}
 
     <div class="flex flex-col gap-5">
       <div class="flex items-center gap-4">
@@ -33,7 +32,7 @@
       </div>
 
       <button
-        on:click={() => ($balance = DEFAULT_BALANCE)}
+        onclick={() => ($balance = DEFAULT_BALANCE)}
         class="touch-manipulation self-start rounded-md bg-red-500 px-3 py-2 text-sm text-white transition-colors hover:bg-red-400 active:bg-red-600"
       >
         Reset Balance

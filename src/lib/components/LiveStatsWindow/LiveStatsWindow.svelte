@@ -20,12 +20,12 @@
     onClose={() => ($isLiveStatsOpen = false)}
     class="fixed bottom-8 right-8 w-[20rem]"
   >
-    <svelte:fragment slot="title">
+    {#snippet title()}
       <ChartLine weight="bold" class="text-xl text-slate-300" />
       <p class="text-sm font-medium text-white">Live Stats</p>
-    </svelte:fragment>
+    {/snippet}
 
-    <svelte:fragment slot="title-bar-actions">
+    {#snippet titleBarActions()}
       <Tooltip.Root openDelay={0} closeOnPointerDown={false}>
         <Tooltip.Trigger asChild let:builder>
           <button
@@ -46,7 +46,7 @@
           <p>Reset Live Stats</p>
         </Tooltip.Content>
       </Tooltip.Root>
-    </svelte:fragment>
+    {/snippet}
 
     <div class="flex flex-col gap-4">
       <Profit />

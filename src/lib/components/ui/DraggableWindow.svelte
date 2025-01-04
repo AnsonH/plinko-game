@@ -1,31 +1,37 @@
-<!--
-@component
-  
-Available slots:
-  - `title`: Title of the window
-  - `title-bar-actions`: Additional action buttons in the title bar
-  - Default: The window content
--->
-
 <script lang="ts">
   import { draggable } from '@neodrag/svelte';
   import Close from 'phosphor-svelte/lib/X';
+  import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { scale } from 'svelte/transition';
   import { twMerge } from 'tailwind-merge';
 
-  type $$Props = HTMLAttributes<HTMLDivElement> & {
+  type Props = Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'class'> & {
+    /**
+     * The title of the window.
+     */
+    title?: Snippet;
+    /**
+     * Additional action buttons in the title bar.
+     */
+    titleBarActions?: Snippet;
+    /**
+     * The window content.
+     */
+    children?: Snippet;
+    /**
+     * Additional classes to apply to the root.
+     */
+    class?: string;
     /**
      * Callback when the window is closed.
      */
     onClose?: () => void;
   };
 
-  export let onClose: $$Props['onClose'] = () => {};
+  let { title, titleBarActions, children, onClose, class: className, ...props }: Props = $props();
 
-  let { class: className, ...restProps } = $$restProps;
-
-  let dragHandleElement: HTMLDivElement;
+  let dragHandleElement: HTMLDivElement | undefined = $state();
 </script>
 
 <div
@@ -35,7 +41,7 @@ Available slots:
     'z-50 w-[15rem] overflow-hidden rounded-md bg-slate-600 drop-shadow-lg',
     className,
   )}
-  {...restProps}
+  {...props}
 >
   <!-- Title bar -->
   <div class="flex">
@@ -43,12 +49,12 @@ Available slots:
       bind:this={dragHandleElement}
       class="flex flex-1 cursor-move items-center gap-2 bg-slate-800 px-4 py-2"
     >
-      <slot name="title" />
+      {@render title?.()}
     </div>
     <div class="ml-auto flex">
-      <slot name="title-bar-actions" />
+      {@render titleBarActions?.()}
       <button
-        on:click={onClose}
+        onclick={onClose}
         class="bg-slate-800 px-5 py-3 text-slate-300 transition hover:bg-red-600 hover:text-white active:bg-red-700 active:text-white"
       >
         <Close weight="bold" />
@@ -58,6 +64,6 @@ Available slots:
 
   <!-- Content -->
   <div class="p-4">
-    <slot />
+    {@render children?.()}
   </div>
 </div>

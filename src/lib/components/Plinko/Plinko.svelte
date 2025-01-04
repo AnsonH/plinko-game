@@ -29,7 +29,8 @@
         </div>
       {/if}
 
-      <canvas use:initPlinko width={WIDTH} height={HEIGHT} class="absolute inset-0 h-full w-full" />
+      <canvas use:initPlinko width={WIDTH} height={HEIGHT} class="absolute inset-0 h-full w-full">
+      </canvas>
     </div>
     <BinsRow />
   </div>

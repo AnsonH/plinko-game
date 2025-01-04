@@ -2,12 +2,16 @@
   import { binColorsByRowCount } from '$lib/constants/game';
   import { winRecords } from '$lib/stores/game';
 
-  /**
-   * Number of last wins to display.
-   */
-  export let winCount = 4;
+  type Props = {
+    /**
+     * Number of last wins to display.
+     */
+    winCount?: number;
+  };
 
-  $: lastWins = $winRecords.slice(-winCount).toReversed();
+  let { winCount = 4 }: Props = $props();
+
+  let lastWins = $derived($winRecords.slice(-winCount).toReversed());
 </script>
 
 <!-- Clamps in mobile:

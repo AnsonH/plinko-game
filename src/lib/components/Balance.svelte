@@ -3,10 +3,12 @@
   import { flyAndScale } from '$lib/utils/transitions';
   import { Popover } from 'bits-ui';
 
-  $: balanceFormatted = $balance.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  let balanceFormatted = $derived(
+    $balance.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }),
+  );
 
   const addMoneyAmounts = [100, 500, 1000];
 </script>
@@ -35,7 +37,7 @@
       <div class="flex gap-2">
         {#each addMoneyAmounts as amount}
           <button
-            on:click={() => ($balance += amount)}
+            onclick={() => ($balance += amount)}
             class="touch-manipulation rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-green-400 active:bg-green-600 disabled:bg-neutral-600 disabled:text-neutral-400"
           >
             +${amount}

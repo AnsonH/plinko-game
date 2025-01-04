@@ -6,7 +6,7 @@
   import { twMerge } from 'tailwind-merge';
   import { type ScriptableLineSegmentContext } from 'chart.js';
 
-  let hoveredProfitValue: number | null = null;
+  let hoveredProfitValue: number | null = $state(null);
 
   const WIN_COLOR = 'rgb(74, 222, 128)'; // green-400
   const WIN_COLOR_FILL = 'rgba(74, 222, 128, 0.3)';
@@ -34,7 +34,6 @@
             },
             cubicInterpolationMode: 'monotone',
             segment: {
-              // @ts-ignore
               borderColor: (ctx: ScriptableLineSegmentContext) => {
                 const y0 = ctx.p0.parsed.y;
                 const y1 = ctx.p1.parsed.y;
@@ -118,7 +117,7 @@
   <div class="mt-6 h-[11rem] w-[16rem]">
     <canvas
       use:initChart={{ profitHistory: $totalProfitHistory }}
-      on:mouseleave={() => (hoveredProfitValue = null)}
-    />
+      onmouseleave={() => (hoveredProfitValue = null)}
+    ></canvas>
   </div>
 </div>
