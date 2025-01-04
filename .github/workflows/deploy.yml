@@ -19,6 +19,7 @@ permissions:
 # https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
 jobs:
   build-and-deploy:
+    if: github.event_name == 'pull_request' || contains(github.event.head_commit.message, 'chore(release)')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
