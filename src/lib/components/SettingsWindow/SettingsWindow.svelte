@@ -15,17 +15,16 @@
   });
 </script>
 
-{#snippet title()}
-  <GearSix weight="fill" class="text-xl text-slate-300" />
-  <p class="text-sm font-medium text-white">Game Settings</p>
-{/snippet}
-
 {#if $isGameSettingsOpen}
   <DraggableWindow
-    {title}
     onClose={() => ($isGameSettingsOpen = false)}
     class="fixed bottom-8 left-8 w-[18rem]"
   >
+    {#snippet title()}
+      <GearSix weight="fill" class="text-xl text-slate-300" />
+      <p class="text-sm font-medium text-white">Game Settings</p>
+    {/snippet}
+
     <div class="flex flex-col gap-5">
       <div class="flex items-center gap-4">
         <Switch id="isAnimationOn" bind:checked={$isAnimationOn} />
