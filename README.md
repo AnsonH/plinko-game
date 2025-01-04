@@ -98,6 +98,10 @@ To visit this page, visit the below URL after starting the development server wi
 http://localhost:5173/benchmark
 ```
 
+## Release
+
+This project uses [Netlify](https://www.netlify.com/) for deployment. To trigger a production deployment, create a commit with message starting with `chore(release)` in the `main` branch.
+
 ## More Screenshots
 
 Mobile:
