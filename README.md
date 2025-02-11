@@ -14,9 +14,9 @@ This project is a replication of [Stake.com's Plinko game](https://stake.com/cas
 
 ### This project is NON-PROFIT
 
-Please do NOT send me emails or invitations asking me to implement a Plinko game for your company or personal portfolio. This project is for personal hobby only. It is NOT a promotion, and I will decline any freelance invitations.
+Please do NOT send me emails or invitations asking me to implement a Plinko game for your company or personal portfolio. This project is for personal hobby only. It is NOT a promotion, and I will IGNORE any freelance invitations 🙏.
 
-Feel free to fork this project on your own if you want to build on top of it.
+Please fork this project on your own if you want to build on top of it.
 
 ## Features
 
@@ -24,6 +24,14 @@ Feel free to fork this project on your own if you want to build on top of it.
 - 🤖 Manual and auto-bet modes
 - 📊 Real-time live stats
 - 📱 Responsive design
+
+## Limitations
+
+The biggest limitation is that this project calculates the outcome on the client-side, so we cannot pre-determine the outcome before ball drop, nor force the ball to drop to a specific pin.
+
+This is because this project uses [matter-js](https://github.com/liabru/matter-js) as the physics engine. This engine runs on client-side, so the outcome is unknown until the ball reaches the bottom. This is different from Stake.com's implementation, where they calculate the outcome in a back-end server, then drop the ball to the determined pin.
+
+Due to the physics engine's unpredictability, the actual average return value may be higher than the expected value (sometimes positive return). This is problematic for real-money gambling, since casinos make money by having a [house advantage](https://en.wikipedia.org/wiki/Casino_game#House_advantage), where the expected return is always less than 1. This could be fixed by adjusting the bin payouts, but I stick to the original Stake.com's payout table for simplicity.
 
 ## Development
 
