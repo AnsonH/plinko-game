@@ -26,7 +26,7 @@
   </nav>
 
   <div class="flex-1 px-5">
-    <div class="mx-auto mt-5 min-w-[300px] max-w-xl drop-shadow-xl md:mt-10 lg:max-w-7xl">
+    <div class="mx-auto mt-5 max-w-xl min-w-[300px] drop-shadow-xl md:mt-10 lg:max-w-7xl">
       <div class="flex flex-col-reverse overflow-hidden rounded-lg lg:w-full lg:flex-row">
         <Sidebar />
         <div class="flex-1">
@@ -39,7 +39,7 @@
   <SettingsWindow />
   <LiveStatsWindow />
 
-  <footer class="px-5 pb-4 pt-16">
+  <footer class="px-5 pt-16 pb-4">
     <div class="mx-auto max-w-[40rem]">
       <div aria-hidden="true" class="h-[1px] bg-slate-700"></div>
       <div class="flex items-center justify-between p-2">
@@ -68,7 +68,9 @@
   </footer>
 </div>
 
-<style>
+<style lang="postcss">
+  @reference "../app.css";
+
   :global(body) {
     @apply bg-gray-800;
   }
