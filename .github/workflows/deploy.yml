@@ -20,7 +20,9 @@ permissions:
 jobs:
   build-and-deploy:
     if: github.event_name == 'pull_request' || contains(github.event.head_commit.message, 'chore(release)')
-    runs-on: ubuntu-latest
+    # Locked to Ubuntu 22 since Playwright has issues with 24
+    # https://github.com/microsoft/playwright/issues/30368
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
