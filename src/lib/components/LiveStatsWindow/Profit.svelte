@@ -24,11 +24,11 @@
   <div class="flex-1 space-y-2">
     <div>
       <p class="font-medium text-slate-400">Wins</p>
-      <p class="font-semibold tabular-nums text-green-400">{winsFormatted}</p>
+      <p class="font-semibold text-green-400 tabular-nums">{winsFormatted}</p>
     </div>
     <div>
       <p class="font-medium text-slate-400">Losses</p>
-      <p class="font-semibold tabular-nums text-red-400">{lossesFormatted}</p>
+      <p class="font-semibold text-red-400 tabular-nums">{lossesFormatted}</p>
     </div>
   </div>
 </div>

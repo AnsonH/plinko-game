@@ -24,7 +24,7 @@
   <div class="mx-auto flex h-full flex-col px-4 pb-4" style:max-width={`${WIDTH}px`}>
     <div class="relative w-full" style:aspect-ratio={`${WIDTH} / ${HEIGHT}`}>
       {#if $plinkoEngine === null}
-        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <CircleNotch class="size-20 animate-spin text-slate-600" weight="bold" />
         </div>
       {/if}
@@ -34,7 +34,7 @@
     </div>
     <BinsRow />
   </div>
-  <div class="absolute right-[5%] top-1/2 -translate-y-1/2">
+  <div class="absolute top-1/2 right-[5%] -translate-y-1/2">
     <LastWins />
   </div>
 </div>

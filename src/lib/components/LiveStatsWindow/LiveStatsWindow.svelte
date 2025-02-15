@@ -18,7 +18,7 @@
 {#if $isLiveStatsOpen}
   <DraggableWindow
     onClose={() => ($isLiveStatsOpen = false)}
-    class="fixed bottom-8 right-8 w-[20rem]"
+    class="fixed right-8 bottom-8 w-[20rem]"
   >
     {#snippet title()}
       <ChartLine weight="bold" class="text-xl text-slate-300" />

@@ -19,7 +19,7 @@
       - Font size: From 8px at 340px viewport width to 10px at 620px viewport width
  -->
 <div
-  class="flex w-[clamp(1.5rem,0.893rem+2.857vw,2rem)] flex-col overflow-hidden rounded-sm text-[clamp(8px,5.568px+0.714vw,10px)] md:rounded-md lg:w-12 lg:text-sm"
+  class="flex w-[clamp(1.5rem,0.893rem+2.857vw,2rem)] flex-col overflow-hidden rounded-xs text-[clamp(8px,5.568px+0.714vw,10px)] md:rounded-md lg:w-12 lg:text-sm"
   style:aspect-ratio={`1 / ${winCount}`}
 >
   {#each lastWins as { binIndex, rowCount, payout: { multiplier } }}
