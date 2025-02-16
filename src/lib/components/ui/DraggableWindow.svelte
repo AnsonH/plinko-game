@@ -37,10 +37,7 @@
 <div
   in:scale={{ duration: 200 }}
   use:draggable={{ bounds: 'body', handle: dragHandleElement }}
-  class={twMerge(
-    'z-50 w-[15rem] overflow-hidden rounded-md bg-slate-600 drop-shadow-lg',
-    className,
-  )}
+  class={twMerge('z-40 w-[15rem] rounded-md bg-slate-600 drop-shadow-lg', className)}
   {...props}
 >
   <!-- Title bar -->

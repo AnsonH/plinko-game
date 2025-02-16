@@ -26,26 +26,33 @@
     {/snippet}
 
     {#snippet titleBarActions()}
-      <Tooltip.Root openDelay={0} closeOnPointerDown={false}>
-        <Tooltip.Trigger asChild let:builder>
-          <button
-            use:builder.action
-            {...builder}
-            on:click={resetLiveStats}
+      <Tooltip.Provider delayDuration={0} disableCloseOnTriggerClick>
+        <Tooltip.Root>
+          <Tooltip.Trigger
+            onclick={resetLiveStats}
             class="bg-slate-800 px-5 py-3 text-slate-300 transition hover:bg-slate-700 active:bg-slate-600"
           >
             <ArrowClockwise weight="bold" />
-          </button>
-        </Tooltip.Trigger>
-        <Tooltip.Content
-          transition={flyAndScale}
-          sideOffset={4}
-          class="z-30 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
-        >
-          <Tooltip.Arrow />
-          <p>Reset Live Stats</p>
-        </Tooltip.Content>
-      </Tooltip.Root>
+          </Tooltip.Trigger>
+          <Tooltip.Content
+            forceMount
+            interactOutsideBehavior="ignore"
+            sideOffset={4}
+            class="z-50 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
+          >
+            {#snippet child({ wrapperProps, props, open })}
+              {#if open}
+                <div {...wrapperProps}>
+                  <div {...props} transition:flyAndScale>
+                    <Tooltip.Arrow class="text-white" />
+                    <p>Reset Live Stats</p>
+                  </div>
+                </div>
+              {/if}
+            {/snippet}
+          </Tooltip.Content>
+        </Tooltip.Root>
+      </Tooltip.Provider>
     {/snippet}
 
     <div class="flex flex-col gap-4">
