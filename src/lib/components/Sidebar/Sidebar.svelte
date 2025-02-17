@@ -278,7 +278,6 @@
           </Tooltip.Trigger>
           <Tooltip.Content
             forceMount
-            interactOutsideBehavior="ignore"
             sideOffset={4}
             class="z-30 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
           >
@@ -308,7 +307,6 @@
           </Tooltip.Trigger>
           <Tooltip.Content
             forceMount
-            interactOutsideBehavior="ignore"
             sideOffset={4}
             class="z-30 max-w-lg rounded-md bg-white p-3 text-sm font-medium text-gray-950 drop-shadow-xl"
           >
